@@ -3,4 +3,6 @@ import * as ReactDOM from "react-dom";
 import "typeface-roboto";
 import { Provider } from "mobx-react";
 
-ReactDOM.render(<p>GGJ 2018, bruh.</p>, document.getElementById("react-container"));
+import { Root } from "./containers/root";
+
+ReactDOM.render(<Root />, document.getElementById("react-container"));
