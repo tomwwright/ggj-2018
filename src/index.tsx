@@ -4,5 +4,17 @@ import "typeface-roboto";
 import { Provider } from "mobx-react";
 
 import { Root } from "./containers/root";
+import { GameStore } from "./stores/game";
 
-ReactDOM.render(<Root />, document.getElementById("react-container"));
+const stores = {
+  game: new GameStore()
+};
+
+(window as any).stores = stores;
+
+ReactDOM.render(
+  <Provider gameStore={stores.game}>
+    <Root />
+  </Provider>,
+  document.getElementById("react-container")
+);
