@@ -7,8 +7,11 @@ import { TvApp } from "./tvApp";
 export const Root: React.StatelessComponent = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/play" component={PlayApp} />
-      <Route path="/tv" component={TvApp} />
+      <Route path="/play/:token" render={props => <PlayApp token={props.match.params.token} />} />
+      <Route path="/tv/:token" render={props => <TvApp token={props.match.params.token} />} />
+      <Route>
+        <p>Oi</p>
+      </Route>
     </Switch>
   </BrowserRouter>
 );

@@ -1,4 +1,10 @@
 import * as React from "react";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 
-export const PlayApp: React.StatelessComponent = () => <p>Play App</p>;
+type PlayAppProps = {
+  token: string;
+};
+
+export const PlayApp: React.StatelessComponent<PlayAppProps> = ({ token }) => (
+  <p>Play App: {token}</p>
+);
