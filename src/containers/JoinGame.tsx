@@ -24,7 +24,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
     height: "100%",
     width: "100%",
     backgroundSize: "cover",
-    backgroundImage: "url(/images/ph_lobby_placeholder.png)",
+    backgroundImage: "url(/ph_lobby_placeholder.png)",
     textAlign: "center"
   };
 

@@ -5,7 +5,7 @@ const splashStyle = {
   height: "100%",
   width: "100%",
   backgroundSize: "cover",
-  backgroundImage: "url(/images/ph_splash_placeholder.png)",
+  backgroundImage: "url(/ph_splash_placeholder.png)",
   textAlign: "center"
 };
 
