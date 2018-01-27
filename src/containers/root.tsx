@@ -40,7 +40,7 @@ export const Root: React.StatelessComponent = () => (
         render={props => {
           return gameWithIdExists(props.match.params.token) ? (
             <WithGame token={props.match.params.token}>
-              <PlayApp name={props.match.params.name} />
+              <PlayApp playerName={props.match.params.playerName} />
             </WithGame>
           ) : (
             // route to createGame page
