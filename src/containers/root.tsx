@@ -3,10 +3,10 @@ import { Route, Switch, BrowserRouter, Link } from "react-router-dom";
 import { Redirect } from "react-router";
 
 import { PlayApp } from "./playApp";
+import { JoinGame } from "containers/JoinGame";
 import { TvApp } from "./tvApp";
 import { WithGame } from "../containers/withGame";
 import { Home } from "../containers/Home";
-import { JoinGame } from "containers/JoinGame";
 
 const gameWithIdExists = (token): boolean => {
   // TODO: check if token exists
@@ -30,13 +30,13 @@ export const Root: React.StatelessComponent = () => (
       />
       <Route
         exact
-        path="/join"
+        path="/join/:roomCode?"
         render={props => {
-          return <JoinGame />;
+          return <JoinGame roomCode={props.match.params.roomCode} />;
         }}
       />
       <Route
-        path="/play/:token/:name"
+        path="/play/:token/:playerName"
         render={props => {
           return gameWithIdExists(props.match.params.token) ? (
             <WithGame token={props.match.params.token}>

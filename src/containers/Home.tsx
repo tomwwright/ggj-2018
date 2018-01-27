@@ -6,11 +6,13 @@ import * as shortid from "shortid";
 
 type CreateGameState = {
   redirect: boolean;
+  roomCode: string;
 };
 
 class Home extends React.Component<{}, CreateGameState> {
   state = {
-    redirect: false
+    redirect: false,
+    roomCode: ""
   };
 
   createGame = (): void => {
@@ -24,7 +26,7 @@ class Home extends React.Component<{}, CreateGameState> {
     GameStore.createGame(token);
 
     // redirect
-    console.log("pre redirect", token);
+    this.setState({ roomCode: token });
     this.setState({ redirect: true });
   };
 
@@ -34,7 +36,7 @@ class Home extends React.Component<{}, CreateGameState> {
 
   public render() {
     if (!!this.state.redirect) {
-      return <Redirect push to={{ pathname: `/join` }} />;
+      return <Redirect push to={{ pathname: `/join/${this.state.roomCode}` }} />;
     }
     return (
       <React.Fragment>

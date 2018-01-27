@@ -32,22 +32,20 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
 
     return (
       <React.Fragment>
-        <form onSubmit={this.joinGame}>
-          <h2>Join</h2>
-          <p>Room Code</p>
-          <input
-            type="text"
-            value={this.state.roomCode}
-            onChange={event => this.setState({ roomCode: event.target.value })}
-          />
-          <p>Hoo-hoo are you?</p>
-          <input
-            type="text"
-            value={this.state.playerName}
-            onChange={event => this.setState({ playerName: event.target.value })}
-          />
-          <button>Join</button>
-        </form>
+        <h2>Join</h2>
+        <p>Room Code</p>
+        <input
+          type="text"
+          value={this.state.roomCode}
+          onChange={event => this.setState({ roomCode: event.target.value })}
+        />
+        <p>Hoo-hoo are you?</p>
+        <input
+          type="text"
+          value={this.state.playerName}
+          onChange={event => this.setState({ playerName: event.target.value })}
+        />
+        <button onClick={() => this.joinGame()}>Join</button>
       </React.Fragment>
     );
   }
