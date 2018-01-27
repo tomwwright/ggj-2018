@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 
 import { GameStore } from "stores/game";
 import { TvStore } from "stores/tv";
+import { TvLobby } from "containers/TvLobby";
 
 type TvAppProps = {
   gameStore?: GameStore;
@@ -24,9 +25,13 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
     );
   }
 
+  if (gameStore.game.state == "lobby") {
+    return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
+  }
+
   return (
     <React.Fragment>
-      <p>TV App ({gameStore.token})</p>
+      <p>Flocking Up Together ({gameStore.token})</p>
       <p>
         <ul>{gameStore.game.players.map(player => <li>{player}</li>)}</ul>
       </p>
