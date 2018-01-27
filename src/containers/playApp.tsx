@@ -22,11 +22,13 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore })
       </React.Fragment>
     );
   }
-  const device = gameStore.devices.find(device => device.playerName == "Tom");
+  const device = gameStore.devices.find(device => device.playerName == gameStore.playerName);
 
   return (
     <React.Fragment>
-      <p>Play App (PLAYER_NAME, {gameStore.token})</p>
+      <p>
+        Play App ({gameStore.playerName}, {gameStore.token})
+      </p>
       <p>Round: {gameStore.game.currentRound}</p>
       <p>
         Turn: {gameStore.round.currentTurn.toString()} / {gameStore.round.numTurns}
