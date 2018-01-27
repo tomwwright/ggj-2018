@@ -23,11 +23,13 @@ export const Root: React.StatelessComponent = () => (
         }}
       />
       <Route
-        path="/play/:token"
+        path="/play/:token/:playerName"
         render={props => {
+          const playerName = props.match.params.playerName;
+
           return tokenExists(props.match.params.token) ? (
             <WithGame token={props.match.params.token}>
-              <PlayApp />
+              <PlayApp playerName={playerName} />
             </WithGame>
           ) : (
             // route to createGame page

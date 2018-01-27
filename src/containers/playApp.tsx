@@ -8,13 +8,12 @@ import { DeviceComponent } from "components/device";
 import { InstructionComponent } from "components/instruction";
 
 type PlayAppProps = {
+  playerName: string;
   gameStore?: GameStore;
 };
 
-const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) => {
-  if (!gameStore.playerName) {
-    return <JoinGame />;
-  }
+const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, playerName }) => {
+  gameStore.setPlayerName(playerName);
 
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (

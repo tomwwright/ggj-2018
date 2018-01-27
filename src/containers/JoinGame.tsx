@@ -1,46 +1,50 @@
 import * as React from "react";
 import { GameStore } from "stores/game";
 import { inject, observer } from "mobx-react";
+import { Redirect } from "react-router";
 
 type JoinGameProps = {
-  gameStore?: GameStore;
+  roomCode?: string;
 };
 
 type JoinGameState = {
-  name?: string;
+  roomCode?: string;
+  playerName?: string;
+  readied: boolean;
 };
 
 class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   state = {
-    name: ""
+    roomCode: this.props.roomCode || "",
+    playerName: "",
+    readied: false
   };
 
-  renderExistingPlayers() {
-    return (
-      <React.Fragment>
-        {this.props.gameStore.game.players &&
-          this.props.gameStore.game.players.map(playerName => (
-            <div key={playerName} style={{ display: "flex", margin: "12px" }}>
-              <button onClick={() => this.setState({ name: playerName })}>
-                Rejoin as {playerName}
-              </button>
-            </div>
-          ))}
-      </React.Fragment>
-    );
+  joinGame() {
+    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName);
+    this.setState({ readied: true });
   }
 
   render() {
+    if (this.state.readied) {
+      return <Redirect to={`/play/${this.state.roomCode}/${this.state.playerName}`} />;
+    }
+
     return (
       <React.Fragment>
-        <form onSubmit={() => this.props.gameStore.setPlayerName(this.state.name)}>
-          <h2>{`Ready Up for Game ${this.props.gameStore.token}`}</h2>
-          <div>Hoo-hoo are you?</div>
-          {this.renderExistingPlayers()}
+        <form onSubmit={this.joinGame}>
+          <h2>Join</h2>
+          <p>Room Code</p>
           <input
             type="text"
-            value={this.state.name}
-            onChange={event => this.setState({ name: event.target.value })}
+            value={this.state.roomCode}
+            onChange={event => this.setState({ roomCode: event.target.value })}
+          />
+          <p>Hoo-hoo are you?</p>
+          <input
+            type="text"
+            value={this.state.playerName}
+            onChange={event => this.setState({ playerName: event.target.value })}
           />
           <button>Join</button>
         </form>
@@ -49,6 +53,5 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   }
 }
 
-const JoinGame = inject("gameStore")(observer(JoinGameComponent));
-
+const JoinGame = JoinGameComponent;
 export { JoinGame };
