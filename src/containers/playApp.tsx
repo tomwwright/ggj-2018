@@ -3,6 +3,7 @@ import { inject, observer } from "mobx-react";
 
 import { GameStore } from "stores/game";
 import { JoinGame } from "containers/JoinGame";
+import { Splash } from "containers/splash";
 import { DeviceComponent } from "components/device";
 import { InstructionComponent } from "components/instruction";
 
@@ -21,6 +22,11 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
       </React.Fragment>
     );
   }
+
+  if (gameStore.game.state != "playing") {
+    return <Splash />;
+  }
+
   const device = gameStore.devices.find(device => device.playerName == gameStore.playerName);
 
   return (
