@@ -23,7 +23,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   if (gameStore.game.state == "lobby" && gameStore.isGameAdmin) {
     return (
       <Splash>
-        <button onClick={() => gameStore.startGame()}>Play!</button>
+        <button onClick={() => gameStore.setGameState("start")}>Play!</button>
       </Splash>
     );
   }

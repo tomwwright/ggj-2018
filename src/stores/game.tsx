@@ -83,7 +83,8 @@ export class GameStore {
       .doc(token)
       .set({
         players: [],
-        state: "lobby"
+        state: "lobby",
+        currentRound: -1
       });
   }
 
@@ -95,10 +96,16 @@ export class GameStore {
     const currentPlayers = game.players || [];
     if (!currentPlayers.find(it => it == playerName)) {
       currentPlayers.push(playerName);
-      gameRef.update({
+      await gameRef.update({
         players: currentPlayers
       });
     }
+  }
+
+  static generateCode(length: number) {
+    const numbers = [];
+    for (let i = 0; i < length; ++i) numbers.push(65 + Math.floor(Math.random() * 26));
+    return String.fromCharCode(...numbers);
   }
 
   @action
@@ -134,7 +141,7 @@ export class GameStore {
   }
 
   @action
-  startGame() {
-    this.gameRef.update({ state: "start" });
+  setGameState(state: string) {
+    this.gameRef.update({ state: state });
   }
 }

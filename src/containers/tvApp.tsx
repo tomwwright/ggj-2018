@@ -4,6 +4,7 @@ import { inject, observer } from "mobx-react";
 import { GameStore } from "stores/game";
 import { TvStore } from "stores/tv";
 import { TvLobby } from "containers/TvLobby";
+import { TvStart } from "containers/TvStart";
 
 type TvAppProps = {
   gameStore?: GameStore;
@@ -21,6 +22,14 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
     return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
   }
 
+  if (gameStore.game.state == "start") {
+    setTimeout(async () => {
+      await tvStore.assignDevices();
+      await tvStore.startRound();
+    }, 1000);
+    return <TvStart />;
+  }
+
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
       <React.Fragment>
@@ -32,9 +41,7 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
   return (
     <React.Fragment>
       <p>Flocking Up Together ({gameStore.token})</p>
-      <p>
-        <ul>{gameStore.game.players.map(player => <li>{player}</li>)}</ul>
-      </p>
+      <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
       <p>
         Lives:
         {" " +
@@ -46,8 +53,8 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
       <p>---</p>
       <p>Devices</p>
       <ul>
-        {gameStore.devices.map(device => (
-          <li>
+        {gameStore.devices.map((device, i) => (
+          <li key={i}>
             {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
           </li>
         ))}
@@ -58,19 +65,17 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
       ) : (
         <React.Fragment>
           <p>Last Turn:</p>
-          <p>
-            <ul>
-              {gameStore.devices.map(device => (
-                <li>
-                  {device.name} == {gameStore.previousTurn.targetState[device.name]}? [{gameStore
-                    .previousTurn.deviceState[device.name] ==
-                  gameStore.previousTurn.targetState[device.name]
-                    ? "YES"
-                    : "NO"}] ({gameStore.previousTurn.deviceState[device.name]})
-                </li>
-              ))}
-            </ul>
-          </p>
+          <ul>
+            {gameStore.devices.map((device, i) => (
+              <li key={i}>
+                {device.name} == {gameStore.previousTurn.targetState[device.name]}? [{gameStore
+                  .previousTurn.deviceState[device.name] ==
+                gameStore.previousTurn.targetState[device.name]
+                  ? "YES"
+                  : "NO"}] ({gameStore.previousTurn.deviceState[device.name]})
+              </li>
+            ))}
+          </ul>
         </React.Fragment>
       )}
     </React.Fragment>

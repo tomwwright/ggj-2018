@@ -7,9 +7,11 @@ import { Root } from "./containers/root";
 import { GameStore } from "./stores/game";
 import { TvStore } from "./stores/tv";
 
+const gameStore = new GameStore();
+
 const stores = {
-  game: new GameStore(),
-  tv: new TvStore()
+  game: gameStore,
+  tv: new TvStore(gameStore)
 };
 
 (window as any).stores = stores;
