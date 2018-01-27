@@ -40,7 +40,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore })
       />
       <p>----</p>
       {gameStore.instructions
-        .filter(instruction => instruction.player == "Tom")
+        .filter(instruction => instruction.player == gameStore.playerName)
         .map((instruction, i) => <InstructionComponent key={i} instruction={instruction} />)}
     </React.Fragment>
   );
