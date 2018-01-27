@@ -126,7 +126,7 @@ export class TvStore {
     const turns: Turn[] = [];
     const initialDeviceState = {};
     devices.forEach(device => {
-      initialDeviceState[device.name] = Math.floor(Math.random() * DeviceMaxState);
+      initialDeviceState[device.name] = Math.ceil(Math.random() * DeviceMaxState).toString();
     });
 
     for (var i = 0; i < numTurns; i++) {
@@ -140,7 +140,7 @@ export class TvStore {
       }
 
       devices.forEach(device => {
-        const shouldChangeThisRound = Math.random() > 0.5;
+        const shouldChangeThisRound = Math.random() > 0.2;
         if (shouldChangeThisRound) {
           deviceTurnTargetStates[device.name] = Math.floor(
             Math.random() * DeviceMaxState
@@ -167,8 +167,7 @@ export class TvStore {
 
       Object.keys(targetState).forEach(deviceName => {
         const targetDeviceValue = targetState[deviceName];
-        const initialDeviceValue = lastTurnsTargetStates[deviceName];
-        const hasChangedThisTurn = targetDeviceValue !== initialDeviceValue;
+        const hasChangedThisTurn = targetDeviceValue !== lastTurnsTargetStates[deviceName];
 
         if (hasChangedThisTurn) {
           const instruction: Instruction = {
