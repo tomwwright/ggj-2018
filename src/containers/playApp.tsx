@@ -1,5 +1,6 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
+import { Redirect } from "react-router";
 
 import { GameStore } from "stores/game";
 import { JoinGame } from "containers/JoinGame";
@@ -14,6 +15,10 @@ type PlayAppProps = {
 
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, playerName }) => {
   gameStore.setPlayerName(playerName);
+
+  if (!gameStore.game.players.find(player => player == gameStore.playerName)) {
+    return <Redirect to={`/join/${gameStore.token}`} />;
+  }
 
   if (gameStore.game.state != "playing") {
     return <Splash />;
