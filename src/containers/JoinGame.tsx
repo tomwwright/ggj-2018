@@ -20,9 +20,25 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
     readied: false
   };
 
+  joinStyle = {
+    height: "100%",
+    backgroundSize: "cover",
+    width: "100%",
+    backgroundImage: "url(/sky_bg.png)",
+    textAlign: "center"
+  };
+
+  roomCodeStyle = {
+    marginTop: "115%"
+
+  };
+  playerNameStyle = {
+    marginTop: "28%"
+  };
+  
   async joinGame() {
-    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {
       this.setState({ readied: true });
+    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {
     });
   }
 
@@ -33,24 +49,28 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
 
     return (
       <React.Fragment>
-        <h2>Join</h2>
-        <p>Room Code</p>
-        <input
-          type="text"
-          value={this.state.roomCode}
-          onChange={event => this.setState({ roomCode: event.target.value })}
-        />
-        <p>Hoo-hoo are you?</p>
-        <input
-          type="text"
-          value={this.state.playerName}
-          onChange={event => this.setState({ playerName: event.target.value })}
-        />
-        <button onClick={() => this.joinGame()}>Join</button>
+        <div id="join-container" style={this.joinStyle}>
+          <div>
+            <input
+              style={this.roomCodeStyle}
+              type="text"
+              value={this.state.roomCode}
+              onChange={event => this.setState({ roomCode: event.target.value })}
+            />
+          </div>
+          <div>
+            <input
+              style={this.playerNameStyle}
+              type="text"
+              value={this.state.playerName}
+              onChange={event => this.setState({ playerName: event.target.value })}
+            />
+          </div>
+          <button onClick={() => this.joinGame()}>Join</button>
+        </div>
       </React.Fragment>
     );
   }
 }
 
-const JoinGame = JoinGameComponent;
-export { JoinGame };
+export { JoinGameComponent as JoinGame };
