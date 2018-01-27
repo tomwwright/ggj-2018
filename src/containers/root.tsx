@@ -50,8 +50,9 @@ export const Root: React.StatelessComponent = () => (
       />
       <Route>
         <React.Fragment>
-          <p>BAD URL. Try:</p>
-          <Link to="/">Home</Link>
+          <p>
+            404: BAD URL, go <Link to="/">Home</Link> you're drunk.
+          </p>
         </React.Fragment>
       </Route>
     </Switch>
