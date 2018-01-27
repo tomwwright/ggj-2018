@@ -1,16 +1,18 @@
 import { observable, action, computed, autorun } from "mobx";
 
 import { firestore, mapDocToT } from "service/firebase";
-import { Game, Round, Turn } from "models";
+import { Game, Device, Round, Turn } from "models";
 import * as Firebase from "firebase";
 
 export class GameStore {
   @observable token: string;
   @observable game: Game;
+  @observable devices: Device[];
   @observable round: Round;
   @observable turns: Turn[];
 
   gameRef: Firebase.firestore.DocumentReference;
+  devicesRef: Firebase.firestore.CollectionReference;
   roundRef: Firebase.firestore.DocumentReference;
   turnsRef: Firebase.firestore.CollectionReference;
 
@@ -20,6 +22,15 @@ export class GameStore {
         this.gameRef = firestore.collection("games").doc(this.token);
         this.gameRef.onSnapshot(snapshot => {
           this.game = mapDocToT<Game>(snapshot);
+        });
+      }
+    });
+
+    autorun(() => {
+      if (this.game) {
+        this.devicesRef = this.gameRef.collection("devices");
+        this.devicesRef.onSnapshot(snapshot => {
+          this.devices = snapshot.docs.map(doc => mapDocToT<Device>(doc));
         });
       }
     });
