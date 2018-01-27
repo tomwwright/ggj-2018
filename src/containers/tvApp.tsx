@@ -39,6 +39,15 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
       </p>
       <p>Turn Time: {tvStore.turnTime}s</p>
       <p>---</p>
+      <p>Devices</p>
+      <ul>
+        {gameStore.devices.map(device => (
+          <li>
+            {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
+          </li>
+        ))}
+      </ul>
+      <p>---</p>
       {!gameStore.previousTurn ? (
         <p>First turn!</p>
       ) : (
