@@ -16,6 +16,8 @@ firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const auth = firebase.auth();
 
+auth.signInAnonymously();
+
 function mapDocToT<T extends ObjectWithId>(doc: firebase.firestore.DocumentSnapshot): T {
   return {
     id: doc.id,

@@ -1,10 +1,11 @@
 import { observable, action, computed, autorun } from "mobx";
 
-import { firestore, mapDocToT } from "service/firebase";
+import { firestore, auth, mapDocToT } from "service/firebase";
 import { Game, Device, Round, Turn, Instruction } from "models";
 import * as Firebase from "firebase";
 
 export class GameStore {
+  @observable playerId: string;
   @observable playerName: string;
   @observable token: string;
   @observable game: Game;
@@ -20,8 +21,13 @@ export class GameStore {
   instructionsRef: Firebase.firestore.CollectionReference;
 
   constructor() {
+    auth.onAuthStateChanged(user => {
+      console.log(user.uid);
+      this.playerId = user.uid;
+    });
+
     autorun(() => {
-      if (this.token) {
+      if (this.token && this.playerName) {
         this.gameRef = firestore.collection("games").doc(this.token);
         this.gameRef.onSnapshot(snapshot => {
           this.game = mapDocToT<Game>(snapshot);
@@ -69,11 +75,25 @@ export class GameStore {
   }
 
   @action
-  async createGame(token: string) {
+  static async createGame(token: string) {
     await firestore
       .collection("games")
       .doc(token)
       .set({});
+  }
+
+  @action
+  static async joinGameAsPlayer(token: string, playerName: string) {
+    const gameRef = firestore.collection("games").doc(token);
+    const game = mapDocToT<Game>(await gameRef.get());
+
+    const currentPlayers = game.players || [];
+    if (!currentPlayers.find(it => it == playerName)) {
+      currentPlayers.push(playerName);
+      gameRef.update({
+        players: currentPlayers
+      });
+    }
   }
 
   @action
@@ -84,13 +104,6 @@ export class GameStore {
   @action
   setPlayerName(playerName: string) {
     this.playerName = playerName;
-    const currentPlayers = this.game.players || [];
-    if (!currentPlayers.find(it => it == playerName)) {
-      currentPlayers.push(playerName);
-      this.gameRef.update({
-        players: currentPlayers
-      });
-    }
   }
 
   @computed
@@ -101,6 +114,11 @@ export class GameStore {
   @computed
   get previousTurn(): Turn {
     return this.turns && this.round.currentTurn > 0 ? this.turns[this.round.currentTurn - 1] : null;
+  }
+
+  @computed
+  get isGameAdmin(): boolean {
+    return this.game && this.game.players[0] == this.playerName;
   }
 
   @action
