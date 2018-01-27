@@ -63,6 +63,10 @@ export class GameStore {
   @action
   setPlayerName(playerName: string) {
     this.playerName = playerName;
+    this.game.players.push(playerName);
+    this.gameRef.update({
+      players: this.game.players
+    });
   }
 
   @computed

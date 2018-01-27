@@ -18,7 +18,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   render() {
     return (
       <React.Fragment>
-        <form onSubmit={() => (this.props.gameStore.playerName = this.state.name)}>
+        <form onSubmit={() => this.props.gameStore.setPlayerName(this.state.name)}>
           <h2>{`Ready Up for Game ${this.props.gameStore.token}`}</h2>
           <div>What's your name, chief?</div>
           <input
