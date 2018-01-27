@@ -2,6 +2,7 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 
 import { GameStore } from "stores/game";
+import { JoinGame } from "containers/JoinGame";
 import { DeviceComponent } from "components/device";
 import { InstructionComponent } from "components/instruction";
 
@@ -10,17 +11,21 @@ type PlayAppProps = {
 };
 
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) => {
+  if (!gameStore.playerName) {
+    return <JoinGame />;
+  }
+
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
-      <div>
+      <React.Fragment>
         <p>Loading stuff...</p>
-      </div>
+      </React.Fragment>
     );
   }
   const device = gameStore.devices.find(device => device.playerName == "Tom");
 
   return (
-    <div>
+    <React.Fragment>
       <p>Play App (PLAYER_NAME, {gameStore.token})</p>
       <p>Round: {gameStore.game.currentRound}</p>
       <p>
@@ -35,7 +40,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore })
       {gameStore.instructions
         .filter(instruction => instruction.player == "Tom")
         .map((instruction, i) => <InstructionComponent key={i} instruction={instruction} />)}
-    </div>
+    </React.Fragment>
   );
 };
 

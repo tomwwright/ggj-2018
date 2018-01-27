@@ -5,6 +5,7 @@ import { Game, Device, Round, Turn, Instruction } from "models";
 import * as Firebase from "firebase";
 
 export class GameStore {
+  @observable playerName: string;
   @observable token: string;
   @observable game: Game;
   @observable devices: Device[];
@@ -70,6 +71,15 @@ export class GameStore {
   @action
   setToken(token: string) {
     this.token = token;
+  }
+
+  @action
+  setPlayerName(playerName: string) {
+    this.playerName = playerName;
+    this.game.players.push(playerName);
+    this.gameRef.update({
+      players: this.game.players
+    });
   }
 
   @computed
