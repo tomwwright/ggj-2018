@@ -19,7 +19,7 @@ const Splash: React.StatelessComponent<SplashProps> = props => {
     return (
       <React.Fragment>
         <div id="splash-container" style={splashStyle}>
-          <PacmanLoader color="white" style="margin-top:125%" />
+          <PacmanLoader color="white" style={{ marginTop: "125%" }} />
           {props.children}
         </div>
       </React.Fragment>
