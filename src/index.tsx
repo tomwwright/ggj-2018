@@ -5,15 +5,17 @@ import { Provider } from "mobx-react";
 
 import { Root } from "./containers/root";
 import { GameStore } from "./stores/game";
+import { TvStore } from "./stores/tv";
 
 const stores = {
-  game: new GameStore()
+  game: new GameStore(),
+  tv: new TvStore()
 };
 
 (window as any).stores = stores;
 
 ReactDOM.render(
-  <Provider gameStore={stores.game}>
+  <Provider gameStore={stores.game} tvStore={stores.tv}>
     <Root />
   </Provider>,
   document.getElementById("react-container")

@@ -89,6 +89,11 @@ export class GameStore {
     return this.turns ? this.turns[this.round.currentTurn] : null;
   }
 
+  @computed
+  get previousTurn(): Turn {
+    return this.turns && this.round.currentTurn > 0 ? this.turns[this.round.currentTurn - 1] : null;
+  }
+
   @action
   setDeviceState(device: string, state: string) {
     this.turnsRef
