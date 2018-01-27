@@ -25,7 +25,7 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
   if (gameStore.game.state == "start") {
     setTimeout(async () => {
       await tvStore.assignDevices();
-      await tvStore.startRound();
+      await tvStore.startNewRound();
     }, 1000);
     return <TvStart />;
   }

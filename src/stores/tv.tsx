@@ -5,74 +5,12 @@ import { firestore, mapDocToT } from "service/firebase";
 import { Game, Device, Round, Turn, Instruction } from "models";
 import { GameStore } from "stores/game";
 
-const hardcodedTurnData = [
-  {
-    targetState: {
-      SamDev: "2",
-      TomDev: "1",
-      JDev: "1"
-    },
-    deviceState: {
-      SamDev: "1",
-      TomDev: "1",
-      JDev: "1"
-    }
-  },
-  {
-    targetState: {
-      SamDev: "2",
-      TomDev: "1",
-      JDev: "2"
-    },
-    deviceState: {}
-  },
-  {
-    targetState: {
-      SamDev: "3",
-      TomDev: "3",
-      JDev: "3"
-    },
-    deviceState: {}
-  }
-];
+const DeviceNames = ["Whatchamacallit", "Doodad", "Whoosiwatsit", "Thingamahjig"];
 
-const hardcodedInstructionData = [
-  [
-    {
-      player: "Tom",
-      device: "SamDev",
-      targetState: "2",
-      targetTurn: 1
-    },
-    {
-      player: "Sam",
-      device: "JDev",
-      targetState: "2",
-      targetTurn: 2
-    },
-    {
-      player: "James",
-      device: "TomDev",
-      targetState: "3",
-      targetTurn: 3
-    }
-  ],
-  [
-    {
-      player: "Sam",
-      device: "SamDev",
-      targetState: "3",
-      targetTurn: 3
-    },
-    {
-      player: "Tom",
-      device: "JDev",
-      targetState: "3",
-      targetTurn: 3
-    }
-  ],
-  []
-];
+const DeviceTypes = ["switch", "slider", "dial"];
+const DeviceMaxState = 10;
+
+const DeviceColors = ["red", "blue", "green", "yellow", "pink", "orange", "purple"];
 
 export class TvStore {
   @observable turnTime: number;
@@ -88,48 +26,148 @@ export class TvStore {
     const gameRef = firestore.collection("games").doc(this.gameStore.token);
     const devicesRef = gameRef.collection("devices");
 
-    this.gameStore.game.players.forEach(async player => {
+    const devicesAreAlreadyAssigned = (await devicesRef.get()).docs.length > 0;
+
+    if (devicesAreAlreadyAssigned) {
+      return;
+    }
+
+    const playerDevices: Device[] = [];
+    this.gameStore.game.players.forEach((player, index) => {
+      const unusedDeviceNames = DeviceNames.filter(
+        name => !playerDevices.find(device => device.name === name)
+      );
+
+      const deviceName = unusedDeviceNames[Math.floor(Math.random() * unusedDeviceNames.length)];
+      const deviceType = DeviceTypes[Math.floor(Math.random() * DeviceTypes.length)];
+      const deviceColor = DeviceColors[index % DeviceColors.length];
+
       const device: Device = {
         playerName: player,
-        colour: "red",
-        type: "switch",
-        name: "Thingamajig"
+        colour: deviceColor,
+        type: deviceType,
+        name: deviceName
       };
-      await devicesRef.add(device);
+
+      playerDevices.push(device);
     });
+
+    playerDevices.forEach(async device => await devicesRef.add(device));
   }
 
   @action
-  public async startRound() {
+  public async startNewRound() {
+    const nextRound = this.gameStore.game.currentRound + 1;
     const gameRef = firestore.collection("games").doc(this.gameStore.token);
 
     const round = {
       currentTurn: -1,
-      numTurns: 3,
+      numTurns: 10,
       turnDuration: 20,
-      difficulty: 1,
+      difficulty: 1 + nextRound,
       lives: 5,
       usedLives: 0
     };
 
-    const roundRef = gameRef
-      .collection("rounds")
-      .doc((this.gameStore.game.currentRound + 1).toString());
+    const roundRef = gameRef.collection("rounds").doc(nextRound.toString());
 
     await roundRef.set(round);
 
-    await gameRef.update({ currentRound: this.gameStore.game.currentRound + 1 });
+    await gameRef.update({ currentRound: nextRound });
+
+    const { turns, instructions } = this.generateTurns(
+      round.numTurns,
+      round.difficulty,
+      this.gameStore.devices,
+      this.gameStore.game.players
+    );
 
     for (let i = 0; i < round.numTurns; ++i) {
       const turnRef = roundRef.collection("turns").doc(i.toString());
 
-      await turnRef.set(hardcodedTurnData[i]);
-      hardcodedInstructionData[i].forEach(
+      await turnRef.set(turns[i]);
+
+      instructions[i].forEach(
         async instruction => await turnRef.collection("instructions").add(instruction)
       );
     }
 
     await this.startNextTurn();
+  }
+
+  @action
+  generateTurns(
+    numTurns: number,
+    difficulty: number,
+    devices: Device[],
+    players: string[]
+  ): { turns: Turn[]; instructions: Instruction[][] } {
+    const turns: Turn[] = [];
+    const initialDeviceState = {};
+    devices.forEach(device => {
+      initialDeviceState[device.name] = Math.floor(Math.random() * DeviceMaxState);
+    });
+
+    for (var i = 0; i < numTurns; i++) {
+      const deviceTurnTargetStates: { [device: string]: string } = {};
+
+      var lastTurnsTargetStates: { [device: string]: string } = {};
+      if (i !== 0) {
+        lastTurnsTargetStates = turns[i - 1].targetState;
+      } else {
+        lastTurnsTargetStates = initialDeviceState;
+      }
+
+      devices.forEach(device => {
+        const shouldChangeThisRound = Math.random() > 0.5;
+        if (shouldChangeThisRound) {
+          deviceTurnTargetStates[device.name] = Math.floor(
+            Math.random() * DeviceMaxState
+          ).toString();
+        } else {
+          deviceTurnTargetStates[device.name] = lastTurnsTargetStates[device.name];
+        }
+      });
+
+      turns.push({
+        targetState: deviceTurnTargetStates,
+        deviceState: i == 0 ? initialDeviceState : {}
+      });
+    }
+
+    const instructionsPerTurn: Instruction[][] = turns.map(() => []);
+    turns.forEach(({ targetState, deviceState }, turnNum) => {
+      var lastTurnsTargetStates: { [device: string]: string } = {};
+      if (turnNum !== 0) {
+        lastTurnsTargetStates = turns[i - 1].targetState;
+      } else {
+        lastTurnsTargetStates = initialDeviceState;
+      }
+
+      Object.keys(targetState).forEach(deviceName => {
+        const targetDeviceValue = targetState[deviceName];
+        const initialDeviceValue = lastTurnsTargetStates[deviceName];
+        const hasChangedThisTurn = targetDeviceValue !== initialDeviceValue;
+
+        if (hasChangedThisTurn) {
+          const instruction: Instruction = {
+            player: players[Math.floor(Math.random() * players.length)],
+            device: deviceName,
+            targetState: targetDeviceValue,
+            targetTurn: turnNum
+          };
+
+          instructionsPerTurn[Math.max(0, turnNum - Math.floor(Math.random() * 4))].push(
+            instruction
+          );
+        }
+      });
+    });
+
+    console.log("turns", turns);
+    console.log("instructionsPerTurn", instructionsPerTurn);
+
+    return { turns, instructions: instructionsPerTurn };
   }
 
   @action
