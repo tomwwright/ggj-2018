@@ -132,4 +132,9 @@ export class GameStore {
       .doc(this.round.currentTurn.toString())
       .set({ deviceState: { [device]: state } }, { merge: true });
   }
+
+  @action
+  startGame() {
+    this.gameRef.update({ state: "start" });
+  }
 }

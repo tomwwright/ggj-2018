@@ -20,6 +20,14 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
     return <Redirect to={`/join/${gameStore.token}`} />;
   }
 
+  if (gameStore.game.state == "lobby" && gameStore.isGameAdmin) {
+    return (
+      <Splash>
+        <button onClick={() => gameStore.startGame()}>Play!</button>
+      </Splash>
+    );
+  }
+
   if (gameStore.game.state != "playing") {
     return <Splash />;
   }
