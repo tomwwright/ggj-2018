@@ -8,11 +8,19 @@ type PlayAppProps = {
   gameStore?: GameStore;
 };
 
-const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) => (
-  <div>
-    <p>Play App ({gameStore.token})</p>
-    <p>Turn: {gameStore.game.currentTurn}</p>
-  </div>
-);
+const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) =>
+  !gameStore.round ? (
+    <div>
+      <p>Loading Round...</p>
+    </div>
+  ) : (
+    <div>
+      <p>Play App (PLAYER_NAME, {gameStore.token})</p>
+      <p>Round: {gameStore.game.currentRound}</p>
+      <p>
+        Turn: {gameStore.round.currentTurn.toString()} / {gameStore.round.numTurns}
+      </p>
+    </div>
+  );
 
 export const PlayApp = inject("gameStore")(observer(PlayAppComponent));

@@ -11,7 +11,6 @@ type TvAppProps = {
 const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore }) => (
   <div>
     <p>TV App ({gameStore.token})</p>
-    <p>Turn: {gameStore.game.currentTurn}</p>
   </div>
 );
 

@@ -8,34 +8,33 @@ export type Game = ObjectWithId & {
   currentTurn: number;
   devices: Device[];
   rounds: Round[];
-  turns: number[]
+  turns: number[];
 };
 
-export type Device = {
+export type Device = ObjectWithId & {
   name: string;
   colour: string;
   type: string;
   playerName: string;
 };
 
-export type Instruction = {
+export type Instruction = ObjectWithId & {
   player: string;
   device: string;
   targetState: string;
   targetTurn: number;
 };
 
-export type Round = {
+export type Round = ObjectWithId & {
   currentTurn: number;
   numTurns: number;
   turnDuration: number;
   difficulty: number;
   lives: number;
   usedLives: number;
-  turns: Turn[];
 };
 
-export type Turn = {
+export type Turn = ObjectWithId & {
   targetState: { [device: string]: string };
   deviceState: { [device: string]: string };
   instructions: Instruction[];
