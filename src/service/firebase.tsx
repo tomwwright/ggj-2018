@@ -1,5 +1,5 @@
 import * as firebase from "firebase";
-import "firebase/firestore";
+import "@firebase/firestore";
 import { ObjectWithId } from "models";
 
 const config = {
