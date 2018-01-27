@@ -244,6 +244,9 @@ export class TvStore {
     if (this.gameStore.round.usedLives >= this.gameStore.round.lives) {
       this.gameOver();
     } else {
+      if (this.gameStore.round.currentTurn == this.gameStore.round.numTurns - 1) {
+        await this.startNewRound();
+      }
       await this.startNextTurn();
     }
   }
