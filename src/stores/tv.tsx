@@ -197,7 +197,13 @@ export class TvStore {
 
     this.turnTime = this.gameStore.round.turnDuration;
 
-    this.gameStore.roundRef.update({ currentTurn: nextTurn });
+    if (nextTurn > 0) {
+      await this.gameStore.turnsRef
+        .doc(nextTurn.toString())
+        .update({ deviceState: this.gameStore.currentTurn.deviceState });
+    }
+
+    await this.gameStore.roundRef.update({ currentTurn: nextTurn });
 
     this.turnTimer = setInterval(() => {
       this.turnTime = this.turnTime - 1;

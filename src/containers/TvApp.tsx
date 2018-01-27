@@ -5,28 +5,24 @@ import { GameStore } from "stores/game";
 import { TvStore } from "stores/tv";
 import { TvLobby } from "containers/TvLobby";
 import { TvStart } from "containers/TvStart";
+import { TvMain } from "containers/TvMain";
+import { TvEndTurn } from "containers/TvEndTurn";
+import { TvEndGame } from "containers/TvEndGame";
 
 type TvAppProps = {
   gameStore?: GameStore;
   tvStore?: TvStore;
 };
 
-function seq(size: number) {
-  const arr = [];
-  for (let i = 0; i < size; ++i) arr.push(i + 1);
-  return arr;
-}
-
 const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvStore }) => {
+  // if we're rendering this component we must be the screen *shrug*
+  tvStore.enable();
+
   if (gameStore.game.state == "lobby") {
     return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
   }
 
   if (gameStore.game.state == "start") {
-    setTimeout(async () => {
-      await tvStore.assignDevices();
-      await tvStore.startNewRound();
-    }, 1000);
     return <TvStart />;
   }
 
@@ -38,48 +34,15 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
     );
   }
 
-  return (
-    <React.Fragment>
-      <p>Flocking Up Together ({gameStore.token})</p>
-      <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
-      <p>
-        Lives:
-        {" " +
-          seq(gameStore.round.lives)
-            .map(i => (i < gameStore.round.usedLives ? "[x]" : "[ ]"))
-            .join(" ")}
-      </p>
-      <p>Turn Time: {tvStore.turnTime}s</p>
-      <p>---</p>
-      <p>Devices</p>
-      <ul>
-        {gameStore.devices.map((device, i) => (
-          <li key={i}>
-            {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
-          </li>
-        ))}
-      </ul>
-      <p>---</p>
-      {!gameStore.previousTurn ? (
-        <p>First turn!</p>
-      ) : (
-        <React.Fragment>
-          <p>Last Turn:</p>
-          <ul>
-            {gameStore.devices.map((device, i) => (
-              <li key={i}>
-                {device.name} == {gameStore.previousTurn.targetState[device.name]}? [{gameStore
-                  .previousTurn.deviceState[device.name] ==
-                gameStore.previousTurn.targetState[device.name]
-                  ? "YES"
-                  : "NO"}] ({gameStore.previousTurn.deviceState[device.name]})
-              </li>
-            ))}
-          </ul>
-        </React.Fragment>
-      )}
-    </React.Fragment>
-  );
+  if (gameStore.game.state == "end turn") {
+    return <TvEndTurn />;
+  }
+
+  if (gameStore.game.state == "game over") {
+    return <TvEndGame round={gameStore.game.currentRound} turn={gameStore.round.currentTurn} />;
+  }
+
+  return <TvMain />;
 };
 
 export const TvApp = inject("gameStore", "tvStore")(observer(TvAppComponent));

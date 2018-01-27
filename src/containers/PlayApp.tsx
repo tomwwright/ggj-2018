@@ -49,7 +49,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
       </p>
       <p>Round: {gameStore.game.currentRound}</p>
       <p>
-        Turn: {gameStore.round.currentTurn.toString()} / {gameStore.round.numTurns}
+        Turn: {(gameStore.round.currentTurn + 1).toString()} / {gameStore.round.numTurns}
       </p>
       <DeviceComponent
         device={device}

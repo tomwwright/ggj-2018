@@ -12,7 +12,7 @@ export const InstructionComponent: React.StatelessComponent<InstructionProps> = 
   <div>
     <p>
       Instruction: Set the {instruction.device} to {instruction.targetState} in Turn{" "}
-      {instruction.targetTurn}!
+      {instruction.targetTurn + 1}!
     </p>
   </div>
 );
