@@ -17,16 +17,16 @@ function seq(size: number) {
 }
 
 const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvStore }) => {
+  if (gameStore.game.state == "lobby") {
+    return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
+  }
+
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
       <React.Fragment>
         <p>Loading stuff...</p>
       </React.Fragment>
     );
-  }
-
-  if (gameStore.game.state == "lobby") {
-    return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
   }
 
   return (
