@@ -22,8 +22,10 @@ export class GameStore {
 
   constructor() {
     auth.onAuthStateChanged(user => {
-      console.log(user.uid);
-      this.playerId = user.uid;
+      if (user) {
+        console.log(user.uid);
+        this.playerId = user.uid;
+      }
     });
 
     autorun(() => {

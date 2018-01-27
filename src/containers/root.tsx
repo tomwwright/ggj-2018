@@ -4,11 +4,17 @@ import { Redirect } from "react-router";
 
 import { PlayApp } from "./playApp";
 import { TvApp } from "./tvApp";
-import { WithGame } from "containers/withGame";
-import { CreateGame } from "containers/CreateGame";
+import { WithGame } from "../containers/withGame";
+import { Home } from "../containers/Home";
+import { JoinGame } from "containers/JoinGame";
 
-const tokenExists = (token): boolean => {
+const gameWithIdExists = (token): boolean => {
   // TODO: check if token exists
+  return true;
+};
+
+const gameWithIdIsLobbyState = (token): boolean => {
+  // TODO: check if game with token is in lobby
   return true;
 };
 
@@ -19,17 +25,22 @@ export const Root: React.StatelessComponent = () => (
         exact
         path="/"
         render={props => {
-          return <CreateGame />;
+          return <Home />;
         }}
       />
       <Route
-        path="/play/:token/:playerName"
+        exact
+        path="/join"
         render={props => {
-          const playerName = props.match.params.playerName;
-
-          return tokenExists(props.match.params.token) ? (
+          return <JoinGame />;
+        }}
+      />
+      <Route
+        path="/play/:token/:name"
+        render={props => {
+          return gameWithIdExists(props.match.params.token) ? (
             <WithGame token={props.match.params.token}>
-              <PlayApp playerName={playerName} />
+              <PlayApp playerName={props.match.params.playerName} />
             </WithGame>
           ) : (
             // route to createGame page
@@ -40,7 +51,7 @@ export const Root: React.StatelessComponent = () => (
       <Route
         path="/tv/:token"
         render={props => {
-          return tokenExists(props.match.params.token) ? (
+          return gameWithIdExists(props.match.params.token) ? (
             <WithGame token={props.match.params.token}>
               <TvApp />
             </WithGame>
