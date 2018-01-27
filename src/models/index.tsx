@@ -4,6 +4,7 @@ export type ObjectWithId = {
 
 export type Game = ObjectWithId & {
   players: string[];
+  state: string;
   currentRound: number;
   currentTurn: number;
   turns: number[];
