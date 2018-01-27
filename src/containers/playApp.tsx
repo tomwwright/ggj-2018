@@ -11,7 +11,7 @@ type PlayAppProps = {
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) => (
   <div>
     <p>Play App ({gameStore.token})</p>
-    <p>Turn: {gameStore.game.turn}</p>
+    <p>Turn: {gameStore.game.currentTurn}</p>
   </div>
 );
 
