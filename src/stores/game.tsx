@@ -81,7 +81,10 @@ export class GameStore {
     await firestore
       .collection("games")
       .doc(token)
-      .set({});
+      .set({
+        players: [],
+        state: "lobby"
+      });
   }
 
   @action
