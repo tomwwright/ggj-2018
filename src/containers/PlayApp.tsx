@@ -6,6 +6,7 @@ import { GameStore } from "stores/game";
 import { JoinGame } from "containers/JoinGame";
 import { Splash } from "containers/splash";
 import { DeviceComponent } from "components/device";
+import { SwitchDevice } from "components/device/switch";
 import { InstructionComponent } from "components/instruction";
 
 type PlayAppProps = {
@@ -51,11 +52,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
       <p>
         Turn: {(gameStore.round.currentTurn + 1).toString()} / {gameStore.round.numTurns}
       </p>
-      <DeviceComponent
-        device={device}
-        state={gameStore.currentTurn.deviceState[device.name]}
-        setState={state => gameStore.setDeviceState(device.name, state)}
-      />
+      <DeviceComponent device={device} />
       <p>----</p>
       {gameStore.instructions
         .filter(instruction => instruction.player == gameStore.playerName)
