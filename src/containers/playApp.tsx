@@ -2,24 +2,41 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 
 import { GameStore } from "stores/game";
+import { DeviceComponent } from "components/device";
+import { InstructionComponent } from "components/instruction";
 
 type PlayAppProps = {
   gameStore?: GameStore;
 };
 
-const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) =>
-  !gameStore.currentTurn ? (
-    <div>
-      <p>Loading Round and Turn...</p>
-    </div>
-  ) : (
+const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore }) => {
+  if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
+    return (
+      <div>
+        <p>Loading stuff...</p>
+      </div>
+    );
+  }
+  const device = gameStore.devices.find(device => device.playerName == "Tom");
+
+  return (
     <div>
       <p>Play App (PLAYER_NAME, {gameStore.token})</p>
       <p>Round: {gameStore.game.currentRound}</p>
       <p>
         Turn: {gameStore.round.currentTurn.toString()} / {gameStore.round.numTurns}
       </p>
+      <DeviceComponent
+        device={device}
+        state={gameStore.currentTurn.deviceState[device.name]}
+        setState={state => gameStore.setDeviceState(device.name, state)}
+      />
+      <p>----</p>
+      {gameStore.instructions
+        .filter(instruction => instruction.player == "Tom")
+        .map((instruction, i) => <InstructionComponent key={i} instruction={instruction} />)}
     </div>
   );
+};
 
 export const PlayApp = inject("gameStore")(observer(PlayAppComponent));

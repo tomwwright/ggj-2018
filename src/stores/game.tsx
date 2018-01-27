@@ -1,7 +1,7 @@
 import { observable, action, computed, autorun } from "mobx";
 
 import { firestore, mapDocToT } from "service/firebase";
-import { Game, Device, Round, Turn } from "models";
+import { Game, Device, Round, Turn, Instruction } from "models";
 import * as Firebase from "firebase";
 
 export class GameStore {
@@ -10,11 +10,13 @@ export class GameStore {
   @observable devices: Device[];
   @observable round: Round;
   @observable turns: Turn[];
+  @observable instructions: Instruction[];
 
   gameRef: Firebase.firestore.DocumentReference;
   devicesRef: Firebase.firestore.CollectionReference;
   roundRef: Firebase.firestore.DocumentReference;
   turnsRef: Firebase.firestore.CollectionReference;
+  instructionsRef: Firebase.firestore.CollectionReference;
 
   constructor() {
     autorun(() => {
@@ -52,6 +54,17 @@ export class GameStore {
         });
       }
     });
+
+    autorun(() => {
+      if (this.currentTurn) {
+        this.instructionsRef = this.turnsRef
+          .doc(this.round.currentTurn.toString())
+          .collection("instructions");
+        this.instructionsRef.onSnapshot(snapshot => {
+          this.instructions = snapshot.docs.map(doc => mapDocToT<Instruction>(doc));
+        });
+      }
+    });
   }
 
   @action
@@ -62,5 +75,12 @@ export class GameStore {
   @computed
   get currentTurn(): Turn {
     return this.turns ? this.turns[this.round.currentTurn] : null;
+  }
+
+  @action
+  setDeviceState(device: string, state: string) {
+    this.turnsRef
+      .doc(this.round.currentTurn.toString())
+      .set({ deviceState: { [device]: state } }, { merge: true });
   }
 }

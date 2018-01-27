@@ -35,5 +35,4 @@ export type Round = ObjectWithId & {
 export type Turn = ObjectWithId & {
   targetState: { [device: string]: string };
   deviceState: { [device: string]: string };
-  instructions: Instruction[];
 };
