@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
 import { GameStore } from "../stores/game";
