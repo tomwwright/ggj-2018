@@ -1,10 +1,15 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Flocking Up Together",
+  "name": "Flocking Up Together",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/favicons/android-chrome-192x192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/android-chrome-384x384.png",
+      "sizes": "384x384",
       "type": "image/png"
     }
   ],
