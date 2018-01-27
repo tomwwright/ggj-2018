@@ -11,47 +11,89 @@ type TvMainProps = {
   gameStore?: GameStore;
 };
 
-const TvMainComponent: React.StatelessComponent<TvMainProps> = ({ gameStore, tvStore }) => (
-  <React.Fragment>
-    <p>Flocking Up Together ({gameStore.token})</p>
-    <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
-    <p>
-      Lives:
-      {" " +
-        seq(gameStore.round.lives)
-          .map(i => (i <= gameStore.round.usedLives ? "[x]" : "[ ]"))
-          .join(" ")}
-    </p>
-    <p>Turn Time: {tvStore.turnTime}s</p>
-    <p>---</p>
-    <p>Devices</p>
-    <ul>
-      {gameStore.devices.map((device, i) => (
-        <li key={i}>
-          {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
-        </li>
-      ))}
-    </ul>
-    <p>---</p>
-    {!gameStore.previousTurn ? (
-      <p>First turn!</p>
-    ) : (
-      <React.Fragment>
-        <p>Last Turn:</p>
-        <ul>
-          {gameStore.devices.map((device, i) => (
-            <li key={i}>
-              {device.name} == {gameStore.previousTurn.targetState[device.name]}? [{gameStore
-                .previousTurn.deviceState[device.name] ==
-              gameStore.previousTurn.targetState[device.name]
-                ? "YES"
-                : "NO"}] ({gameStore.previousTurn.deviceState[device.name]})
-            </li>
-          ))}
-        </ul>
-      </React.Fragment>
-    )}
-  </React.Fragment>
-);
+type PreviousTurnDeviceSuccessProps = {
+  deviceName: string;
+  targetState: string;
+  deviceState: string;
+  key: number;
+};
+
+const PreviousTurnDeviceSuccess: React.StatelessComponent<
+  PreviousTurnDeviceSuccessProps
+> = props => {
+  const isSuccess = props.deviceState == props.targetState;
+  const soundUrlToPlay = isSuccess ? "/assets/test.wav" : "/assets/test.wav";
+  const successMessage = isSuccess ? "YES" : "NO";
+
+  return (
+    <li key={props.key}>
+      <p>
+        {props.deviceName} == {props.targetState}? [{successMessage}] ({props.deviceState})
+      </p>
+    </li>
+  );
+};
+
+const TurnDeviceSuccess: React.StatelessComponent<PreviousTurnDeviceSuccessProps> = props => {
+  const isSuccess = props.deviceState == props.targetState;
+  const soundUrlToPlay = isSuccess ? "/assets/test.wav" : "/assets/test.wav";
+  const successMessage = isSuccess ? "YES" : "NO";
+
+  return (
+    <li key={props.key}>
+      <p>
+        {props.deviceName} == {props.targetState}?
+      </p>
+      <p>
+        [{successMessage}] ({props.deviceState})
+      </p>
+    </li>
+  );
+};
+
+const TvMainComponent: React.StatelessComponent<TvMainProps> = ({ gameStore, tvStore }) => {
+  const renderLives = seq(gameStore.round.lives)
+    .map(i => (i <= gameStore.round.usedLives ? "[x]" : "[ ]"))
+    .join(" ");
+
+  return (
+    <React.Fragment>
+      <p>Flocking Up Together ({gameStore.token})</p>
+      <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
+      <p>
+        Lives:
+        {" " + renderLives}
+      </p>
+      <p>Turn Time: {tvStore.turnTime}s</p>
+      <p>---</p>
+      <p>Devices</p>
+      <ul>
+        {gameStore.devices.map((device, i) => (
+          <li key={i}>
+            {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
+          </li>
+        ))}
+      </ul>
+      <p>---</p>
+      {!gameStore.previousTurn ? (
+        <p>First turn!</p>
+      ) : (
+        <React.Fragment>
+          <p>Last Turn:</p>
+          <ul>
+            {gameStore.devices.map((device, i) => (
+              <PreviousTurnDeviceSuccess
+                key={i}
+                deviceName={device.name}
+                targetState={gameStore.previousTurn.targetState[device.name]}
+                deviceState={gameStore.previousTurn.deviceState[device.name]}
+              />
+            ))}
+          </ul>
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+};
 
 export const TvMain = inject("tvStore", "gameStore")(observer(TvMainComponent));
