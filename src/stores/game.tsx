@@ -29,7 +29,7 @@ export class GameStore {
     });
 
     autorun(() => {
-      if (this.token && this.playerName) {
+      if (this.token) {
         this.gameRef = firestore.collection("games").doc(this.token);
         this.gameRef.onSnapshot(snapshot => {
           this.game = mapDocToT<Game>(snapshot);

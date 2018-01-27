@@ -15,16 +15,16 @@ type PlayAppProps = {
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, playerName }) => {
   gameStore.setPlayerName(playerName);
 
+  if (gameStore.game.state != "playing") {
+    return <Splash />;
+  }
+
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
       <React.Fragment>
         <p>Loading stuff...</p>
       </React.Fragment>
     );
-  }
-
-  if (gameStore.game.state != "playing") {
-    return <Splash />;
   }
 
   const device = gameStore.devices.find(device => device.playerName == gameStore.playerName);
