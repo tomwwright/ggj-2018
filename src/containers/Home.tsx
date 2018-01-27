@@ -15,6 +15,14 @@ class Home extends React.Component<{}, CreateGameState> {
     roomCode: ""
   };
 
+  homeStyle = {
+    height: "100%",
+    width: "100%",
+    backgroundSize: "cover",
+    backgroundImage: "url(/sky_bg.png)",
+    textAlign: "center"
+  };
+
   createGame = (): void => {
     // generate guid
     const token = shortid
@@ -39,8 +47,8 @@ class Home extends React.Component<{}, CreateGameState> {
       return <Redirect push to={{ pathname: `/join/${this.state.roomCode}` }} />;
     }
     return (
-      <React.Fragment>
-        <h2>Welcome to OWL GAME THING</h2>
+      <div style={this.homeStyle}>
+        <img src="/sigil.png" alt="flocking up together sigil" max-width="1080px" height="300px" />
         <form>
           <button type="submit" onClick={this.createGame}>
             Create Game
@@ -49,7 +57,7 @@ class Home extends React.Component<{}, CreateGameState> {
             Join Game
           </button>
         </form>
-      </React.Fragment>
+      </div>
     );
   }
 }
