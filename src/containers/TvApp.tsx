@@ -8,6 +8,7 @@ import { TvStart } from "containers/TvStart";
 import { TvMain } from "containers/TvMain";
 import { TvEndTurn } from "containers/TvEndTurn";
 import { TvEndGame } from "containers/TvEndGame";
+import ReactPlayer from "react-player";
 
 type TvAppProps = {
   gameStore?: GameStore;
@@ -18,31 +19,30 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
   // if we're rendering this component we must be the screen *shrug*
   tvStore.enable();
 
+  var screenComponent;
+
   if (gameStore.game.state == "lobby") {
-    return <TvLobby token={gameStore.token} players={gameStore.game.players} />;
-  }
-
-  if (gameStore.game.state == "start") {
-    return <TvStart />;
-  }
-
-  if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
-    return (
-      <React.Fragment>
-        <p>Loading stuff...</p>
-      </React.Fragment>
+    screenComponent = <TvLobby token={gameStore.token} players={gameStore.game.players} />;
+  } else if (gameStore.game.state == "start") {
+    screenComponent = <TvStart />;
+  } else if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
+    screenComponent = <p>Loading stuff...</p>;
+  } else if (gameStore.game.state == "end turn") {
+    screenComponent = <TvEndTurn />;
+  } else if (gameStore.game.state == "game over") {
+    screenComponent = (
+      <TvEndGame round={gameStore.game.currentRound} turn={gameStore.round.currentTurn} />
     );
+  } else {
+    screenComponent = <TvMain />;
   }
 
-  if (gameStore.game.state == "end turn") {
-    return <TvEndTurn />;
-  }
-
-  if (gameStore.game.state == "game over") {
-    return <TvEndGame round={gameStore.game.currentRound} turn={gameStore.round.currentTurn} />;
-  }
-
-  return <TvMain />;
+  return (
+    <React.Fragment>
+      <ReactPlayer url="/assets/jamjam.ogg" preload="auto" playing loop width={0} height={0} />
+      {screenComponent}
+    </React.Fragment>
+  );
 };
 
 export const TvApp = inject("gameStore", "tvStore")(observer(TvAppComponent));

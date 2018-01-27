@@ -5,10 +5,33 @@ import { TvStore } from "stores/tv";
 import { GameStore } from "stores/game";
 
 import { seq } from "utils";
+import ReactPlayer from "react-player";
 
 type TvEndTurnProps = {
   tvStore?: TvStore;
   gameStore?: GameStore;
+};
+
+type TurnDeviceSuccessProps = {
+  deviceName: string;
+  targetState: string;
+  deviceState: string;
+  key: number;
+};
+
+const TurnDeviceSuccess: React.StatelessComponent<TurnDeviceSuccessProps> = props => {
+  const isSuccess = props.deviceState == props.targetState;
+  const soundUrlToPlay = isSuccess ? "/assets/round_yah.ogg" : "/assets/round_nah.ogg";
+  const successMessage = isSuccess ? "YES" : "NO";
+
+  return (
+    <li key={props.key}>
+      <p>
+        {props.deviceName} == {props.targetState}? [{successMessage}] ({props.deviceState})
+      </p>
+      <ReactPlayer url={soundUrlToPlay} preload="auto" playing width={0} height={0} />
+    </li>
+  );
 };
 
 const TvEndTurnComponent: React.StatelessComponent<TvEndTurnProps> = ({ gameStore, tvStore }) => (
@@ -37,13 +60,12 @@ const TvEndTurnComponent: React.StatelessComponent<TvEndTurnProps> = ({ gameStor
         {gameStore.devices
           .filter((device, i) => i < tvStore.deviceStateListCount)
           .map((device, i) => (
-            <li key={i}>
-              {device.name} == {gameStore.currentTurn.targetState[device.name]}? [{gameStore
-                .currentTurn.deviceState[device.name] ==
-              gameStore.currentTurn.targetState[device.name]
-                ? "YES"
-                : "NO"}] ({gameStore.currentTurn.deviceState[device.name]})
-            </li>
+            <TurnDeviceSuccess
+              key={i}
+              deviceName={device.name}
+              targetState={gameStore.currentTurn.targetState[device.name]}
+              deviceState={gameStore.currentTurn.deviceState[device.name]}
+            />
           ))}
       </ul>
     </React.Fragment>
