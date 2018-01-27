@@ -1,5 +1,6 @@
-import { observable, action, computed, autorun } from "mobx";
+import { observable, action, computed, autorun, when } from "mobx";
 import * as Firebase from "firebase";
+import { timeout } from "utils";
 
 import { firestore, mapDocToT } from "service/firebase";
 import { Game, Device, Round, Turn, Instruction } from "models";
@@ -14,11 +15,28 @@ const DeviceColors = ["red", "blue", "green", "yellow", "pink", "orange", "purpl
 
 export class TvStore {
   @observable turnTime: number;
+  private turnTimer: any;
+
+  @observable deviceStateListCount = 0;
 
   private gameStore: GameStore;
 
+  @observable enabled: boolean = false;
+
   constructor(gameStore: GameStore) {
     this.gameStore = gameStore;
+
+    when(
+      () => this.gameStore.game && this.gameStore.game.state == "start" && this.enabled,
+      () => {
+        this.startGame();
+      }
+    );
+  }
+
+  @action
+  public enable() {
+    this.enabled = true;
   }
 
   @action
@@ -91,8 +109,11 @@ export class TvStore {
         async instruction => await turnRef.collection("instructions").add(instruction)
       );
     }
+  }
 
-    await this.startNextTurn();
+  @action
+  public async setUsedLives(newUsedLives: number) {
+    await this.gameStore.roundRef.update({ usedLives: newUsedLives });
   }
 
   @action
@@ -177,6 +198,53 @@ export class TvStore {
     this.turnTime = this.gameStore.round.turnDuration;
 
     this.gameStore.roundRef.update({ currentTurn: nextTurn });
+
+    this.turnTimer = setInterval(() => {
+      this.turnTime = this.turnTime - 1;
+      if (this.turnTime < 0) {
+        clearInterval(this.turnTimer);
+        this.endTurn();
+      }
+    }, 1000);
+
     this.gameStore.setGameState("playing");
+  }
+
+  @action
+  public startGame() {
+    setTimeout(async () => {
+      await this.assignDevices();
+      await this.startNewRound();
+      await this.startNextTurn();
+    }, 1000);
+  }
+
+  @action
+  public async endTurn() {
+    this.gameStore.setGameState("end turn");
+    this.deviceStateListCount = 0;
+    for (let i = 0; i < this.gameStore.devices.length; ++i) {
+      await timeout(1000);
+      const device = this.gameStore.devices[i];
+
+      this.deviceStateListCount++;
+      if (
+        this.gameStore.currentTurn.targetState[device.name] !==
+        this.gameStore.currentTurn.deviceState[device.name]
+      ) {
+        this.setUsedLives(this.gameStore.round.usedLives + 1);
+      }
+    }
+    await timeout(5000);
+    if (this.gameStore.round.usedLives >= this.gameStore.round.lives) {
+      this.gameOver();
+    } else {
+      await this.startNextTurn();
+    }
+  }
+
+  @action
+  public gameOver() {
+    this.gameStore.setGameState("game over");
   }
 }

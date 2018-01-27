@@ -2,9 +2,9 @@ import * as React from "react";
 import { Route, Switch, BrowserRouter, Link } from "react-router-dom";
 import { Redirect } from "react-router";
 
-import { PlayApp } from "./playApp";
+import { PlayApp } from "./PlayApp";
 import { JoinGame } from "containers/JoinGame";
-import { TvApp } from "./tvApp";
+import { TvApp } from "./TvApp";
 import { WithGame } from "../containers/withGame";
 import { Home } from "../containers/Home";
 
