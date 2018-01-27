@@ -1,14 +1,22 @@
 import * as React from "react";
 import { Redirect } from "react-router";
+import { inject, observer } from "mobx-react";
+import { GameStore } from "stores/game";
 
-class CreateGame extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      token: "",
-      redirect: false
-    };
-  }
+type CreateGameProps = {
+  gameStore?: GameStore;
+};
+
+type CreateGameState = {
+  token: string;
+  redirect: boolean;
+};
+
+class CreateGameComponent extends React.Component<CreateGameProps, CreateGameState> {
+  state = {
+    token: "",
+    redirect: false
+  };
 
   isTokenValid = (): boolean => {
     //TODO: check this against existing game ids on Firebase
@@ -28,6 +36,7 @@ class CreateGame extends React.Component<any, any> {
   handleGameToken = (): void => {
     // if valid token, route
     if (this.isTokenValid()) {
+      this.props.gameStore.createGame(this.state.token);
       this.setState({ redirect: true });
     }
   };
@@ -57,5 +66,7 @@ class CreateGame extends React.Component<any, any> {
     );
   }
 }
+
+const CreateGame = inject("gameStore")(observer(CreateGameComponent));
 
 export { CreateGame };

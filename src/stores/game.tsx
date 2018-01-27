@@ -69,6 +69,14 @@ export class GameStore {
   }
 
   @action
+  async createGame(token: string) {
+    await firestore
+      .collection("games")
+      .doc(token)
+      .set({});
+  }
+
+  @action
   setToken(token: string) {
     this.token = token;
   }
@@ -76,10 +84,11 @@ export class GameStore {
   @action
   setPlayerName(playerName: string) {
     this.playerName = playerName;
-    if (!this.game.players.find(it => it == playerName)) {
-      this.game.players.push(playerName);
+    const currentPlayers = this.game.players || [];
+    if (!currentPlayers.find(it => it == playerName)) {
+      currentPlayers.push(playerName);
       this.gameRef.update({
-        players: this.game.players
+        players: currentPlayers
       });
     }
   }

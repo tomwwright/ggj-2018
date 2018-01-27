@@ -18,13 +18,14 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   renderExistingPlayers() {
     return (
       <React.Fragment>
-        {this.props.gameStore.game.players.map(playerName => (
-          <div key={playerName} style={{ display: "flex", margin: "12px" }}>
-            <button onClick={() => this.setState({ name: playerName })}>
-              Rejoin as {playerName}
-            </button>
-          </div>
-        ))}
+        {this.props.gameStore.game.players &&
+          this.props.gameStore.game.players.map(playerName => (
+            <div key={playerName} style={{ display: "flex", margin: "12px" }}>
+              <button onClick={() => this.setState({ name: playerName })}>
+                Rejoin as {playerName}
+              </button>
+            </div>
+          ))}
       </React.Fragment>
     );
   }
