@@ -162,14 +162,7 @@ export class TvStore {
       }
 
       devices.forEach(device => {
-        const shouldChangeThisRound = Math.random() > 0.2;
-        if (shouldChangeThisRound) {
-          deviceTurnTargetStates[device.name] = Math.floor(
-            Math.random() * DeviceMaxState
-          ).toString();
-        } else {
-          deviceTurnTargetStates[device.name] = lastTurnsTargetStates[device.name];
-        }
+        deviceTurnTargetStates[device.name] = lastTurnsTargetStates[device.name];
       });
 
       turns.push({
@@ -199,9 +192,9 @@ export class TvStore {
             targetTurn: turnNum
           };
 
-          instructionsPerTurn[Math.max(0, turnNum - Math.floor(Math.random() * 4))].push(
-            instruction
-          );
+          instructionsPerTurn[
+            Math.max(0, turnNum - Math.floor(Math.random() * Math.random() * 2))
+          ].push(instruction);
         }
       });
     });
