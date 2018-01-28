@@ -53,7 +53,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
       <div style={{ position: "absolute", width: "100%" }}>
         <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
         <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
-        <DeviceComponent device={device} turnNumber={gameStore.round.currentTurn} />
+        <DeviceComponent device={device} turnNumber={gameStore.round.currentTurn + 1} />
         <div
           style={{
             position: "absolute",
