@@ -1,0 +1,31 @@
+button {
+  border-radius: 8px;
+  background-color: transparent;
+  border: "solid 1px";
+  border-color: greenyellow;
+  color: greenyellow;
+  font-size: 24px;
+  font-family: roboto;
+  padding: 10px;
+  width: 200px;
+  margin: 10px;
+}
+
+h1,
+h2,
+h3,
+p {
+  color: greenyellow;
+  font-family: roboto;
+}
+
+input[type="text"] {
+  background-color: transparent;
+  border: "solid 1px";
+  border-color: greenyellow;
+  color: greenyellow;
+  font-size: 24px;
+  font-family: roboto;
+  padding: 10px;
+  min-width: 200px;
+}
