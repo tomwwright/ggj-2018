@@ -55,7 +55,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
             height="300px"
           />
           {/* Room Code */}
-          <img src="/join/room_code.png" alt="room code" max-width="1080px" max-height="100px" />
+          <p>Enter Room Code</p>
           <div>
             <input
               style={this.roomCodeStyle}
@@ -65,7 +65,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
             />
           </div>
           {/* Player Name */}
-          <img src="/join/name.png" alt="player name" max-width="1080px" max-height="100px" />
+          <p>Player Name</p>
           <div>
             <input
               style={this.playerNameStyle}
