@@ -31,15 +31,12 @@ export class TvStore {
     autorun(() => {
       if (this.gameStore.game && this.gameStore.game.state == "playing" && this.enabled) {
         const currentStates = this.oldDeviceState || {};
-        console.log("currentStates", currentStates);
-        console.log("deviceState", this.gameStore.currentTurn.deviceState);
         const hasDifferentState = Object.keys(currentStates).find(
           deviceName =>
             currentStates[deviceName] !== this.gameStore.currentTurn.deviceState[deviceName]
         );
 
         if (hasDifferentState) {
-          console.log("hasDifferentState", hasDifferentState);
           const sound = new Howl({
             src: ["/assets/switch.ogg"],
             preload: true,
