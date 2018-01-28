@@ -7,6 +7,7 @@ type TvEndGameProps = {
 
 export const TvEndGame: React.StatelessComponent<TvEndGameProps> = props => (
   <React.Fragment>
+    <ReactPlayer url="/assets/lose.ogg" preload="auto" playing width={0} height={0} />
     <img src="/sigil.png" style={{ maxWidth: "40%", marginTop: "5%" }} />
     <h3>Game Over</h3>
     <p>
