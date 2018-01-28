@@ -54,8 +54,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
             max-width="1080px"
             height="300px"
           />
-          {/* Room Code */}
-          <p>Enter Room Code</p>
+          <h2>Enter Room Code</h2>
           <div>
             <input
               style={this.roomCodeStyle}
@@ -64,8 +63,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
               onChange={event => this.setState({ roomCode: event.target.value })}
             />
           </div>
-          {/* Player Name */}
-          <p>Player Name</p>
+          <h2>Player Name</h2>
           <div>
             <input
               style={this.playerNameStyle}

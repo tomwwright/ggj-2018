@@ -63,7 +63,7 @@ export const Root: React.StatelessComponent = () => (
       />
       <Route>
         <React.Fragment>
-          <p>
+          <p style={{ color: "black" }}>
             404: BAD URL, go <Link to="/">Home</Link> you're drunk.
           </p>
         </React.Fragment>
