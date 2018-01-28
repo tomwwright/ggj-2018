@@ -17,7 +17,7 @@ const bgStyle = {
   backgroundImage: "url(/assets/sky_bg_tv.jpg)",
   textAlign: "center",
   color: "greenyellow",
-  zIndex: -1
+  fontFamily: "roboto"
 };
 
 type TvAppProps = {
