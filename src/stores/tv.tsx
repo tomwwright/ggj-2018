@@ -162,7 +162,7 @@ export class TvStore {
       }
 
       devices.forEach(device => {
-        deviceTurnTargetStates[device.name] = lastTurnsTargetStates[device.name];
+        deviceTurnTargetStates[device.name] = Math.floor(Math.random() * DeviceMaxState).toString();
       });
 
       turns.push({
