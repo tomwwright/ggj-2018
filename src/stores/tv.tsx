@@ -109,12 +109,13 @@ export class TvStore {
     const nextRound = this.gameStore.game.currentRound + 1;
     const gameRef = firestore.collection("games").doc(this.gameStore.token);
 
+    const numPlayers = this.gameStore.game.players.length;
     const round = {
       currentTurn: -1,
       numTurns: 10,
-      turnDuration: 20,
+      turnDuration: Math.max(20, numPlayers * 4),
       difficulty: 1 + nextRound,
-      lives: 5,
+      lives: numPlayers * 2,
       usedLives: 0
     };
 
@@ -171,7 +172,9 @@ export class TvStore {
       }
 
       devices.forEach(device => {
-        deviceTurnTargetStates[device.name] = Math.floor(Math.random() * DeviceMaxState).toString();
+        deviceTurnTargetStates[device.name] = (
+          1 + Math.floor(Math.random() * DeviceMaxState)
+        ).toString();
       });
 
       turns.push({
@@ -191,20 +194,17 @@ export class TvStore {
 
       Object.keys(targetState).forEach(deviceName => {
         const targetDeviceValue = targetState[deviceName];
-        const hasChangedThisTurn = targetDeviceValue !== lastTurnsTargetStates[deviceName];
 
-        if (hasChangedThisTurn) {
-          const instruction: Instruction = {
-            player: players[Math.floor(Math.random() * players.length)],
-            device: deviceName,
-            targetState: targetDeviceValue,
-            targetTurn: turnNum
-          };
+        const instruction: Instruction = {
+          player: players[Math.floor(Math.random() * players.length)],
+          device: deviceName,
+          targetState: targetDeviceValue,
+          targetTurn: turnNum
+        };
 
-          instructionsPerTurn[
-            Math.max(0, turnNum - Math.floor(Math.random() * Math.random() * 3))
-          ].push(instruction);
-        }
+        instructionsPerTurn[
+          Math.max(0, turnNum - Math.floor(Math.random() * Math.random() * 3))
+        ].push(instruction);
       });
     });
 
