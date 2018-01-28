@@ -36,8 +36,9 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   };
 
   async joinGame() {
-    this.setState({ readied: true });
-    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {});
+    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {
+      this.setState({ readied: true });
+    });
   }
 
   render() {
@@ -48,12 +49,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
     return (
       <React.Fragment>
         <div id="join-container" style={this.joinStyle}>
-          <img
-            src="/sigil.png"
-            alt="flocking up together sigil"
-            max-width="1080px"
-            height="300px"
-          />
+          <img src="/sigil.png" alt="flocking up together sigil" height="40%" />
           <h2>Enter Room Code</h2>
           <div>
             <input

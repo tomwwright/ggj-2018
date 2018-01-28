@@ -44,26 +44,28 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
 
   return (
     <React.Fragment>
-      <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
-      <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
-      <DeviceComponent device={device} />
-      <div
-        style={{
-          position: "absolute",
-          top: "5%",
-          left: "10%",
-          width: "80%"
-        }}
-      >
-        {gameStore.instructions
-          .filter(instruction => instruction.player == gameStore.playerName)
-          .map((instruction, i) => (
-            <InstructionComponent
-              key={i}
-              instruction={instruction}
-              device={gameStore.devices.find(device => device.name == instruction.device)}
-            />
-          ))}
+      <div style={{ position: "absolute", width: "100%" }}>
+        <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
+        <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
+        <DeviceComponent device={device} />
+        <div
+          style={{
+            position: "absolute",
+            top: "5%",
+            left: "10%",
+            width: "80%"
+          }}
+        >
+          {gameStore.instructions
+            .filter(instruction => instruction.player == gameStore.playerName)
+            .map((instruction, i) => (
+              <InstructionComponent
+                key={i}
+                instruction={instruction}
+                device={gameStore.devices.find(device => device.name == instruction.device)}
+              />
+            ))}
+        </div>
       </div>
     </React.Fragment>
   );

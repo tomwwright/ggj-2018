@@ -7,9 +7,41 @@ type TvLobbyProps = {
 
 export const TvLobby: React.StatelessComponent<TvLobbyProps> = ({ token, players }) => (
   <React.Fragment>
-    <h1>Flocking Up Together</h1>
-    <h3>Room Code: {token}</h3>
-    <ul>{players.map((player, i) => <li key={i}>{player}</li>)}</ul>
-    <p>Waiting for players...</p>
+    <img src="/sigil.png" style={{ maxWidth: "40%", marginTop: "5%" }} />
+    <div
+      style={{
+        textAlign: "right",
+        position: "absolute",
+        right: "5%",
+        bottom: "5%"
+      }}
+    >
+      <h1>Room Code: {token}</h1>
+      <p>Waiting for players...</p>
+    </div>
+    <div
+      style={{
+        position: "absolute",
+        left: "5%",
+        bottom: "5%",
+        display: "flex",
+        width: "60%"
+      }}
+    >
+      {players.map((player, i) => (
+        <div
+          style={{
+            display: "inline-block",
+            flex: 1,
+            flexGrow: 1,
+            margin: "5px",
+            maxWidth: "25%"
+          }}
+        >
+          <img src={`/avatars/player_0${i % 4 + 1}.png`} style={{ maxWidth: "100%" }} />
+          <p>{player}</p>
+        </div>
+      ))}
+    </div>
   </React.Fragment>
 );
