@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import ReactPlayer from "react-player";
+
 type TvEndGameProps = {
   round: number;
   turn: number;
