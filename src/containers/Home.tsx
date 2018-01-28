@@ -48,8 +48,8 @@ class Home extends React.Component<{}, CreateGameState> {
     }
     return (
       <div style={this.homeStyle}>
-        <img src="/sigil.png" alt="flocking up together sigil" max-width="1080px" height="300px" />
-        <form style={{ textAlign: "center" }}>
+        <img src="/sigil.png" alt="flocking up together sigil" height="40%" />
+        <form style={{ marginTop: "10%", textAlign: "center" }}>
           <button type="submit" onClick={this.createGame}>
             Create Game
           </button>

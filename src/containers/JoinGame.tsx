@@ -48,12 +48,7 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
     return (
       <React.Fragment>
         <div id="join-container" style={this.joinStyle}>
-          <img
-            src="/sigil.png"
-            alt="flocking up together sigil"
-            max-width="1080px"
-            height="300px"
-          />
+          <img src="/sigil.png" alt="flocking up together sigil" height="40%" />
           <h2>Enter Room Code</h2>
           <div>
             <input
