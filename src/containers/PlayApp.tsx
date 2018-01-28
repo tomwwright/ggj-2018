@@ -29,13 +29,19 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   }
 
   if (gameStore.game.state != "playing") {
-    return <Splash />;
+    return (
+      <Splash>
+        <h3>Look up</h3>
+      </Splash>
+    );
   }
 
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
       <React.Fragment>
-        <Splash spinner={true} />
+        <Splash spinner={true}>
+          <h3>Loading...</h3>
+        </Splash>
       </React.Fragment>
     );
   }
@@ -47,7 +53,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
       <div style={{ position: "absolute", width: "100%" }}>
         <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
         <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
-        <DeviceComponent device={device} />
+        <DeviceComponent device={device} turnNumber={gameStore.round.currentTurn + 1} />
         <div
           style={{
             position: "absolute",
