@@ -10,6 +10,16 @@ import { TvEndTurn } from "containers/TvEndTurn";
 import { TvEndGame } from "containers/TvEndGame";
 import ReactPlayer from "react-player";
 
+const bgStyle = {
+  height: "100%",
+  width: "100%",
+  backgroundSize: "cover",
+  backgroundImage: "url(/assets/sky_bg_tv.jpg)",
+  textAlign: "center",
+  color: "greenyellow",
+  zIndex: -1
+};
+
 type TvAppProps = {
   gameStore?: GameStore;
   tvStore?: TvStore;
@@ -38,10 +48,10 @@ const TvAppComponent: React.StatelessComponent<TvAppProps> = ({ gameStore, tvSto
   }
 
   return (
-    <React.Fragment>
+    <div style={bgStyle}>
       <ReactPlayer url="/assets/jamjam.ogg" preload="auto" playing loop width={0} height={0} />
       {screenComponent}
-    </React.Fragment>
+    </div>
   );
 };
 

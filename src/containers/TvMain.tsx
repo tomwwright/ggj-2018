@@ -26,7 +26,7 @@ const PreviousTurnDeviceSuccess: React.StatelessComponent<
   const successMessage = isSuccess ? "YES" : "NO";
 
   return (
-    <li key={props.key}>
+    <li key={props.key} style={{ listStyle: "none" }}>
       <p>
         {props.deviceName} == {props.targetState}? [{successMessage}] ({props.deviceState})
       </p>
@@ -58,40 +58,42 @@ const TvMainComponent: React.StatelessComponent<TvMainProps> = ({ gameStore, tvS
 
   return (
     <React.Fragment>
-      <p>Flocking Up Together ({gameStore.token})</p>
-      <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
-      <p>
-        Lives:
-        {" " + renderLives}
-      </p>
-      <p>Turn Time: {tvStore.turnTime}s</p>
-      <p>---</p>
-      <p>Devices</p>
-      <ul>
-        {gameStore.devices.map((device, i) => (
-          <li key={i}>
-            {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
-          </li>
-        ))}
-      </ul>
-      <p>---</p>
-      {!gameStore.previousTurn ? (
-        <p>First turn!</p>
-      ) : (
-        <React.Fragment>
-          <p>Last Turn:</p>
-          <ul>
-            {gameStore.devices.map((device, i) => (
-              <PreviousTurnDeviceSuccess
-                key={i}
-                deviceName={device.name}
-                targetState={gameStore.previousTurn.targetState[device.name]}
-                deviceState={gameStore.previousTurn.deviceState[device.name]}
-              />
-            ))}
-          </ul>
-        </React.Fragment>
-      )}
+      <div>
+        <p>Flocking Up Together ({gameStore.token})</p>
+        <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
+        <p>
+          Lives:
+          {" " + renderLives}
+        </p>
+        <p>Turn Time: {tvStore.turnTime}s</p>
+        <p>---</p>
+        <p>Devices</p>
+        <ul style={{ listStyle: "none" }}>
+          {gameStore.devices.map((device, i) => (
+            <li key={i} style={{ listStyle: "none" }}>
+              {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
+            </li>
+          ))}
+        </ul>
+        <p>---</p>
+        {!gameStore.previousTurn ? (
+          <p>First turn!</p>
+        ) : (
+          <React.Fragment>
+            <p>Last Turn:</p>
+            <ul>
+              {gameStore.devices.map((device, i) => (
+                <PreviousTurnDeviceSuccess
+                  key={i}
+                  deviceName={device.name}
+                  targetState={gameStore.previousTurn.targetState[device.name]}
+                  deviceState={gameStore.previousTurn.deviceState[device.name]}
+                />
+              ))}
+            </ul>
+          </React.Fragment>
+        )}
+      </div>
     </React.Fragment>
   );
 };
