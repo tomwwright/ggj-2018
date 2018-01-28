@@ -12,7 +12,7 @@ type RadioButtonProps = {
 const SwitchDeviceComponent: React.StatelessComponent<RadioButtonProps> = props => (
   <React.Fragment>
     <img
-      style={{ cursor: "pointer", width: "128px" }}
+      style={{ cursor: "pointer", width: "21%", margin: "2%", marginTop: "13%" }}
       onClick={() => {
         if (props.gameStore.currentTurn.deviceState[props.name] != props.value) {
           props.gameStore.setDeviceState(props.name, props.value);

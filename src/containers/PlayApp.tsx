@@ -50,18 +50,27 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
 
   return (
     <React.Fragment>
-      <p>
-        Play App ({gameStore.playerName}, {gameStore.token})
-      </p>
-      <p>Round: {gameStore.game.currentRound}</p>
-      <p>
-        Turn: {(gameStore.round.currentTurn + 1).toString()} / {gameStore.round.numTurns}
-      </p>
+      <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
+      <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
       <DeviceComponent device={device} />
-      <p>----</p>
-      {gameStore.instructions
-        .filter(instruction => instruction.player == gameStore.playerName)
-        .map((instruction, i) => <InstructionComponent key={i} instruction={instruction} />)}
+      <div
+        style={{
+          position: "absolute",
+          top: "5%",
+          left: "10%",
+          width: "80%"
+        }}
+      >
+        {gameStore.instructions
+          .filter(instruction => instruction.player == gameStore.playerName)
+          .map((instruction, i) => (
+            <InstructionComponent
+              key={i}
+              instruction={instruction}
+              device={gameStore.devices.find(device => device.name == instruction.device)}
+            />
+          ))}
+      </div>
     </React.Fragment>
   );
 };
