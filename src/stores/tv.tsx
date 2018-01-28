@@ -29,7 +29,7 @@ export class TvStore {
     this.gameStore = gameStore;
 
     autorun(() => {
-      if (this.gameStore.game && this.gameStore.game.state == "playing") {
+      if (this.gameStore.game && this.gameStore.game.state == "playing" && this.enabled) {
         const currentStates = this.oldDeviceState || {};
         console.log("currentStates", currentStates);
         console.log("deviceState", this.gameStore.currentTurn.deviceState);
