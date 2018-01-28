@@ -7,7 +7,10 @@ type TvLobbyProps = {
 
 export const TvLobby: React.StatelessComponent<TvLobbyProps> = ({ token, players }) => (
   <React.Fragment>
-    <img src="/sigil.png" style={{ maxWidth: "40%", marginTop: "5%" }} />
+    <img
+      src="/sigil.png"
+      style={{ maxWidth: "25%", marginTop: "5%", marginLeft: "5%", display: "block" }}
+    />
     <div
       style={{
         textAlign: "right",
