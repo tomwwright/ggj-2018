@@ -10,10 +10,11 @@ type DeviceProps = {
 
 export const DeviceComponent: React.StatelessComponent<DeviceProps> = props => (
   <React.Fragment>
-    <SwitchDevice name={props.device.name} value="1" />
-    <SwitchDevice name={props.device.name} value="2" />
-    <SwitchDevice name={props.device.name} value="3" />
-    <SwitchDevice name={props.device.name} value="4" />
-    <SwitchDevice name={props.device.name} value="5" />
+    <div style={{ width: "90%", margin: "auto" }}>
+      <SwitchDevice name={props.device.name} value="1" />
+      <SwitchDevice name={props.device.name} value="2" />
+      <SwitchDevice name={props.device.name} value="3" />
+      <SwitchDevice name={props.device.name} value="4" />
+    </div>
   </React.Fragment>
 );
