@@ -57,44 +57,37 @@ const TvMainComponent: React.StatelessComponent<TvMainProps> = ({ gameStore, tvS
     .join(" ");
 
   return (
-    <React.Fragment>
-      <div>
-        <p>Flocking Up Together ({gameStore.token})</p>
-        <ul>{gameStore.game.players.map((player, i) => <li key={i}>{player}</li>)}</ul>
-        <p>
-          Lives:
-          {" " + renderLives}
-        </p>
-        <p>Turn Time: {tvStore.turnTime}s</p>
-        <p>---</p>
-        <p>Devices</p>
-        <ul style={{ listStyle: "none" }}>
-          {gameStore.devices.map((device, i) => (
-            <li key={i} style={{ listStyle: "none" }}>
-              {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
-            </li>
-          ))}
-        </ul>
-        <p>---</p>
-        {!gameStore.previousTurn ? (
-          <p>First turn!</p>
-        ) : (
-          <React.Fragment>
-            <p>Last Turn:</p>
-            <ul>
-              {gameStore.devices.map((device, i) => (
-                <PreviousTurnDeviceSuccess
-                  key={i}
-                  deviceName={device.name}
-                  targetState={gameStore.previousTurn.targetState[device.name]}
-                  deviceState={gameStore.previousTurn.deviceState[device.name]}
-                />
-              ))}
-            </ul>
-          </React.Fragment>
-        )}
+    <div style={{ fontSize: "24px" }}>
+      <div style={{ position: "absolute", left: "0", right: "0", margin: "12px" }}>
+        Turn Time: {tvStore.turnTime ? `${tvStore.turnTime}s` : "--"}
       </div>
-    </React.Fragment>
+      <div style={{ position: "absolute", left: "0px", top: "0px", margin: "12px" }}>
+        Round: {gameStore.game.currentRound + 1}
+      </div>
+      <div style={{ position: "absolute", right: "0px", top: "0px", margin: "12px" }}>
+        Turn: {gameStore.game.currentTurn ? gameStore.game.currentTurn + 1 : 0}
+      </div>
+      <div style={{ position: "absolute", right: "0px", top: "50px", margin: "12px" }}>
+        Strikes: {gameStore.round.lives - gameStore.round.usedLives} / {gameStore.round.lives}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: "0",
+          right: "0",
+          top: 0,
+          bottom: 0,
+          height: "400px",
+          margin: "auto"
+        }}
+      >
+        {gameStore.devices.map((device, i) => (
+          <p>
+            {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
+          </p>
+        ))}
+      </div>
+    </div>
   );
 };
 
