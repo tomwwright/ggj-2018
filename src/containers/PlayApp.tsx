@@ -50,7 +50,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
 
   return (
     <React.Fragment>
-      <img src="/playerscreens/terminal.svg" style={{ maxWidth: "100%" }} />
+      <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
       <DeviceComponent device={device} />
       <div
         style={{
@@ -60,9 +60,15 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
           width: "80%"
         }}
       >
-        {/* {gameStore.instructions
+        {gameStore.instructions
           .filter(instruction => instruction.player == gameStore.playerName)
-          .map((instruction, i) => <InstructionComponent key={i} instruction={instruction} />)} */}
+          .map((instruction, i) => (
+            <InstructionComponent
+              key={i}
+              instruction={instruction}
+              device={gameStore.devices.find(device => device.name == instruction.device)}
+            />
+          ))}
       </div>
     </React.Fragment>
   );
