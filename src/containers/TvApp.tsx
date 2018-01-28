@@ -14,7 +14,7 @@ const bgStyle = {
   height: "100%",
   width: "100%",
   backgroundSize: "cover",
-  backgroundImage: "url(/assets/sky_bg_tv.jpg)",
+  backgroundImage: "url(/assets/bg_tv.png)",
   textAlign: "center",
   color: "greenyellow",
   fontFamily: "roboto"
