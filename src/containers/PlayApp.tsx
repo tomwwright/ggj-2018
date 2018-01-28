@@ -51,6 +51,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   return (
     <React.Fragment>
       <img src="/playerscreens/terminal.png" style={{ maxWidth: "100%" }} />
+      <img src="/playerscreens/switches_bg.png" style={{ maxWidth: "100%" }} />
       <DeviceComponent device={device} />
       <div
         style={{

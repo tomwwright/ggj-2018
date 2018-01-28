@@ -10,7 +10,7 @@ import { Howl, Howler } from "howler";
 const DeviceNames = ["Whatchamacallit", "Doodad", "Whoosiwatsit", "Thingamahjig"];
 
 const DeviceTypes = ["switch"];
-const DeviceMaxState = 4;
+const DeviceMaxState = 8;
 
 const DeviceColors = ["red", "blue", "green", "yellow", "pink", "orange", "purple"];
 
