@@ -25,7 +25,6 @@ export const TvLobby: React.StatelessComponent<TvLobbyProps> = ({ token, players
         left: "5%",
         bottom: "5%",
         display: "flex",
-        justifyContent: "space-between",
         width: "60%"
       }}
     >
