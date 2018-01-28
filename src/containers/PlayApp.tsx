@@ -1,7 +1,6 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
 import { Redirect } from "react-router";
-
 import { GameStore } from "stores/game";
 import { JoinGame } from "containers/JoinGame";
 import { Splash } from "containers/splash";
@@ -14,6 +13,10 @@ type PlayAppProps = {
   gameStore?: GameStore;
 };
 
+const playButtonStyle = {
+  marginTop: "125%"
+};
+
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, playerName }) => {
   gameStore.setPlayerName(playerName);
 
@@ -24,7 +27,9 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   if (gameStore.game.state == "lobby" && gameStore.isGameAdmin) {
     return (
       <Splash>
-        <button onClick={() => gameStore.setGameState("start")}>Play!</button>
+        <button style={playButtonStyle} onClick={() => gameStore.setGameState("start")}>
+          Play!
+        </button>
       </Splash>
     );
   }
@@ -36,7 +41,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   if (!gameStore.currentTurn || !gameStore.devices || !gameStore.instructions) {
     return (
       <React.Fragment>
-        <p>Loading stuff...</p>
+        <Splash spinner={true} />
       </React.Fragment>
     );
   }

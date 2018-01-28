@@ -29,6 +29,7 @@
     "file-loader": "0.11.2",
     "firebase": "^4.9.0",
     "fs-extra": "3.0.1",
+    "halogenium": "^2.2.3",
     "howler": "^2.0.8",
     "html-webpack-plugin": "2.29.0",
     "imports-loader": "^0.7.1",
@@ -68,7 +69,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "preDeploy": "yarn build",
+    "local-hosting": "yarn build && yarn firebase serve --only hosting",
+    "predeploy": "yarn build",
     "deploy": "firebase deploy"
   },
   "jest": {
@@ -91,7 +93,7 @@
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|t/blob/master/packages/react-scripts/template/README.md#adding-images-fonts-and-filessx)$"
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
