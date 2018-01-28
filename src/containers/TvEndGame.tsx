@@ -7,8 +7,7 @@ type TvEndGameProps = {
 
 export const TvEndGame: React.StatelessComponent<TvEndGameProps> = props => (
   <React.Fragment>
-    <h1>Flocking Up Together</h1>
-
+    <img src="/sigil.png" style={{ maxWidth: "40%", marginTop: "5%" }} />
     <h3>Game Over</h3>
     <p>
       Round {props.round}, Turn {props.turn}
