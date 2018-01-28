@@ -7,12 +7,21 @@ import { Game, Device, Round, Turn, Instruction } from "models";
 import { GameStore } from "stores/game";
 import { Howl, Howler } from "howler";
 
-const DeviceNames = ["Whatchamacallit", "Doodad", "Whoosiwatsit", "Thingamahjig"];
+const DeviceNames = [
+  "Whatchamacallit",
+  "Doodad",
+  "Whoosiwatsit",
+  "Thingamahjig",
+  "Thingo",
+  "Jigga",
+  "Dowhacky",
+  "Chazzwazza"
+];
 
 const DeviceTypes = ["switch"];
 const DeviceMaxState = 8;
 
-const DeviceColors = ["red", "blue", "green", "yellow", "pink", "orange", "purple"];
+const DeviceColors = ["red", "blue", "green", "yellow", "pink", "orange", "purple", "brown"];
 
 export class TvStore {
   @observable turnTime: number;
@@ -148,7 +157,7 @@ export class TvStore {
     const turns: Turn[] = [];
     const initialDeviceState = {};
     devices.forEach(device => {
-      initialDeviceState[device.name] = Math.ceil(Math.random() * DeviceMaxState).toString();
+      initialDeviceState[device.name] = (1 + Math.floor(Math.random() * DeviceMaxState)).toString();
     });
 
     for (var i = 0; i < numTurns; i++) {
@@ -193,7 +202,7 @@ export class TvStore {
           };
 
           instructionsPerTurn[
-            Math.max(0, turnNum - Math.floor(Math.random() * Math.random() * 2))
+            Math.max(0, turnNum - Math.floor(Math.random() * Math.random() * 3))
           ].push(instruction);
         }
       });

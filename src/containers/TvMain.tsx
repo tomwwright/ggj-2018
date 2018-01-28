@@ -65,7 +65,7 @@ const TvMainComponent: React.StatelessComponent<TvMainProps> = ({ gameStore, tvS
         Round: {gameStore.game.currentRound + 1}
       </div>
       <div style={{ position: "absolute", right: "0px", top: "0px", margin: "12px" }}>
-        Turn: {gameStore.game.currentTurn ? gameStore.game.currentTurn + 1 : 0}
+        Turn: {gameStore.round.currentTurn ? gameStore.round.currentTurn + 1 : 0}
       </div>
       <div style={{ position: "absolute", right: "0px", top: "50px", margin: "12px" }}>
         Strikes: {gameStore.round.lives - gameStore.round.usedLives} / {gameStore.round.lives}
