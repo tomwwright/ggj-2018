@@ -5,6 +5,7 @@ import { timeout } from "utils";
 import { firestore, mapDocToT } from "service/firebase";
 import { Game, Device, Round, Turn, Instruction } from "models";
 import { GameStore } from "stores/game";
+import { Howl, Howler } from "howler";
 
 const DeviceNames = ["Whatchamacallit", "Doodad", "Whoosiwatsit", "Thingamahjig"];
 
@@ -20,11 +21,35 @@ export class TvStore {
   @observable deviceStateListCount = 0;
 
   private gameStore: GameStore;
+  private oldDeviceState: { [device: string]: string };
 
   @observable enabled: boolean = false;
 
   constructor(gameStore: GameStore) {
     this.gameStore = gameStore;
+
+    autorun(() => {
+      if (this.gameStore.game && this.gameStore.game.state == "playing") {
+        const currentStates = this.oldDeviceState || {};
+        console.log("currentStates", currentStates);
+        console.log("deviceState", this.gameStore.currentTurn.deviceState);
+        const hasDifferentState = Object.keys(currentStates).find(
+          deviceName =>
+            currentStates[deviceName] !== this.gameStore.currentTurn.deviceState[deviceName]
+        );
+
+        if (hasDifferentState) {
+          console.log("hasDifferentState", hasDifferentState);
+          const sound = new Howl({
+            src: ["/assets/switch.ogg"],
+            preload: true,
+            html5: true
+          }).play();
+        }
+
+        this.oldDeviceState = this.gameStore.currentTurn.deviceState;
+      }
+    });
 
     when(
       () => this.gameStore.game && this.gameStore.game.state == "start" && this.enabled,
