@@ -13,10 +13,6 @@ type PlayAppProps = {
   gameStore?: GameStore;
 };
 
-const playButtonStyle = {
-  marginTop: "125%"
-};
-
 const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, playerName }) => {
   gameStore.setPlayerName(playerName);
 
@@ -27,9 +23,7 @@ const PlayAppComponent: React.StatelessComponent<PlayAppProps> = ({ gameStore, p
   if (gameStore.game.state == "lobby" && gameStore.isGameAdmin) {
     return (
       <Splash>
-        <button style={playButtonStyle} onClick={() => gameStore.setGameState("start")}>
-          Play!
-        </button>
+        <button onClick={() => gameStore.setGameState("start")}>Play!</button>
       </Splash>
     );
   }

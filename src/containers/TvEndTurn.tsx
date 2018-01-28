@@ -36,39 +36,45 @@ const TurnDeviceSuccess: React.StatelessComponent<TurnDeviceSuccessProps> = prop
 
 const TvEndTurnComponent: React.StatelessComponent<TvEndTurnProps> = ({ gameStore, tvStore }) => (
   <React.Fragment>
-    <p>Flocking Up Together ({gameStore.token})</p>
-    <p>
-      Lives:
-      {" " +
-        seq(gameStore.round.lives)
-          .map(i => (i <= gameStore.round.usedLives ? "[x]" : "[ ]"))
-          .join(" ")}
-    </p>
-    <p>---</p>
-    <p>Devices</p>
-    <ul>
-      {gameStore.devices.map((device, i) => (
-        <li key={i}>
-          {device.name} set to {gameStore.currentTurn.deviceState[device.name]}
-        </li>
-      ))}
-    </ul>
-    <p>---</p>
-    <React.Fragment>
-      <p>Results:</p>
-      <ul>
-        {gameStore.devices
-          .filter((device, i) => i < tvStore.deviceStateListCount)
-          .map((device, i) => (
-            <TurnDeviceSuccess
-              key={i}
-              deviceName={device.name}
-              targetState={gameStore.currentTurn.targetState[device.name]}
-              deviceState={gameStore.currentTurn.deviceState[device.name]}
-            />
-          ))}
-      </ul>
-    </React.Fragment>
+    <div style={{ fontSize: "24px" }}>
+      <div style={{ position: "absolute", left: "0px", top: "0px", margin: "12px" }}>
+        Round: {gameStore.game.currentRound + 1}
+      </div>
+      <div style={{ position: "absolute", right: "0px", top: "0px", margin: "12px" }}>
+        Turn: {gameStore.game.currentTurn ? gameStore.game.currentTurn + 1 : 0}
+      </div>
+      <div style={{ position: "absolute", right: "0px", top: "50px", margin: "12px" }}>
+        Strikes: {gameStore.round.lives - gameStore.round.usedLives} / {gameStore.round.lives}
+      </div>
+
+      <React.Fragment>
+        <div
+          style={{
+            position: "absolute",
+            left: "0",
+            right: "0",
+            top: 0,
+            bottom: 0,
+            height: "400px",
+            margin: "auto"
+          }}
+        >
+          <p>Results:</p>
+          <ul>
+            {gameStore.devices
+              .filter((device, i) => i < tvStore.deviceStateListCount)
+              .map((device, i) => (
+                <TurnDeviceSuccess
+                  key={i}
+                  deviceName={device.name}
+                  targetState={gameStore.currentTurn.targetState[device.name]}
+                  deviceState={gameStore.currentTurn.deviceState[device.name]}
+                />
+              ))}
+          </ul>
+        </div>
+      </React.Fragment>
+    </div>
   </React.Fragment>
 );
 
