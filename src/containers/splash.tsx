@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PacmanLoader } from "halogenium";
+// import { PacmanLoader } from "halogenium";
 
 const splashStyle = {
   height: "100%",
@@ -15,11 +15,10 @@ type SplashProps = {
 
 const Splash: React.StatelessComponent<SplashProps> = props => {
   if (props.spinner) {
-    console.log("spinner!!!");
     return (
       <React.Fragment>
         <div id="splash-container" style={splashStyle}>
-          <PacmanLoader color="white" style={{ marginTop: "125%" }} />
+          {/* <PacmanLoader color="white" style={{ left: "50%" }} /> */}
           {props.children}
         </div>
       </React.Fragment>
