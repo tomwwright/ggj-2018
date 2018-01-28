@@ -36,8 +36,9 @@ class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
   };
 
   async joinGame() {
-    this.setState({ readied: true });
-    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {});
+    GameStore.joinGameAsPlayer(this.state.roomCode, this.state.playerName).then(() => {
+      this.setState({ readied: true });
+    });
   }
 
   render() {
