@@ -5,14 +5,12 @@ import { GameStore } from "../stores/game";
 import * as shortid from "shortid";
 
 type CreateGameState = {
-  redirect: boolean;
-  roomCode: string;
+  redirect: string;
 };
 
 class Home extends React.Component<{}, CreateGameState> {
   state = {
-    redirect: false,
-    roomCode: ""
+    redirect: null
   };
 
   homeStyle = {
@@ -34,17 +32,16 @@ class Home extends React.Component<{}, CreateGameState> {
     GameStore.createGame(token);
 
     // redirect
-    this.setState({ roomCode: token });
-    this.setState({ redirect: true });
+    this.setState({ redirect: `/tv/${token}` });
   };
 
   joinGame = (): void => {
-    this.setState({ redirect: true });
+    this.setState({ redirect: "/join" });
   };
 
   public render() {
-    if (!!this.state.redirect) {
-      return <Redirect push to={{ pathname: `/join/${this.state.roomCode}` }} />;
+    if (this.state.redirect) {
+      return <Redirect push to={{ pathname: this.state.redirect }} />;
     }
     return (
       <div style={this.homeStyle}>
