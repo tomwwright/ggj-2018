@@ -3,19 +3,15 @@ import { GameStore } from "stores/game";
 import { inject, observer } from "mobx-react";
 import { Redirect } from "react-router";
 
-type JoinGameProps = {
-  roomCode?: string;
-};
-
 type JoinGameState = {
   roomCode?: string;
   playerName?: string;
   readied: boolean;
 };
 
-class JoinGameComponent extends React.Component<JoinGameProps, JoinGameState> {
+class JoinGameComponent extends React.Component<{}, JoinGameState> {
   state = {
-    roomCode: this.props.roomCode || "",
+    roomCode: "",
     playerName: "",
     readied: false
   };

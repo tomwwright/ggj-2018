@@ -30,9 +30,9 @@ export const Root: React.StatelessComponent = () => (
       />
       <Route
         exact
-        path="/join/:roomCode?"
+        path="/join"
         render={props => {
-          return <JoinGame roomCode={props.match.params.roomCode} />;
+          return <JoinGame />;
         }}
       />
       <Route
